@@ -9,9 +9,9 @@ A simple React and TypeScript program for managing hospital bed assignments. The
    ```sh
    npm install
    ```
-3. Start the development server:
+3. Run the tests to ensure everything works:
    ```sh
-   npm run dev
+   npm test
    ```
 
 
