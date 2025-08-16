@@ -1,5 +1,5 @@
 import { defineConfig } from 'vite';
-import path from 'path';
+import { fileURLToPath, URL } from 'node:url';
 
 // Detect repository name from the GitHub environment to construct the correct
 // base path when deploying to GitHub Pages. This allows the site to work both
@@ -11,7 +11,7 @@ export default defineConfig(async () => ({
   plugins: [(await import('@vitejs/plugin-react')).default()],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, '.'),
+      '@': fileURLToPath(new URL('./', import.meta.url)),
     },
   },
   base: repo ? `/${repo}/` : '/',
