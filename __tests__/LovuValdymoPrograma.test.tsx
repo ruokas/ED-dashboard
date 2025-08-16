@@ -22,10 +22,21 @@ jest.mock(
 
 jest.mock(
   '@/components/ui/card',
-  () => ({
-    Card: ({ children, ...props }: any) => <div {...props}>{children}</div>,
-    CardContent: ({ children, ...props }: any) => <div {...props}>{children}</div>
-  }),
+  () => {
+    const React = require('react');
+    return {
+      Card: React.forwardRef<HTMLDivElement, any>(({ children, ...props }, ref) => (
+        <div ref={ref} {...props}>
+          {children}
+        </div>
+      )),
+      CardContent: React.forwardRef<HTMLDivElement, any>(({ children, ...props }, ref) => (
+        <div ref={ref} {...props}>
+          {children}
+        </div>
+      ))
+    };
+  },
   { virtual: true }
 );
 
