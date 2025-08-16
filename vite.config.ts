@@ -1,12 +1,9 @@
 import { defineConfig } from 'vite';
 import { fileURLToPath, URL } from 'node:url';
 
-// Detect repository name from the GitHub environment to construct the correct
-// base path when deploying to GitHub Pages. This allows the site to work both
-// locally (where `GITHUB_REPOSITORY` is undefined and the base becomes `/`) and
-// on pages (where the repo name is used as the base prefix).
-const repo = process.env.GITHUB_REPOSITORY?.split('/')[1];
-
+// Use a relative base path so built assets load correctly regardless of where
+// the site is hosted. This avoids servers responding with a generic MIME type
+// for module scripts when an absolute path cannot be resolved.
 export default defineConfig(async () => ({
   plugins: [(await import('@vitejs/plugin-react')).default()],
   resolve: {
@@ -14,7 +11,7 @@ export default defineConfig(async () => ({
       '@': fileURLToPath(new URL('./', import.meta.url)),
     },
   },
-  base: repo ? `/${repo}/` : '/',
+  base: './',
   build: {
     outDir: 'docs',
     emptyOutDir: true,
