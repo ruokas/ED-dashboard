@@ -5,3 +5,6 @@ dist
 main.js
 *.js
 
+# Keep built files for GitHub Pages
+!docs/**/*.js
+
