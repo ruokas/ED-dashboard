@@ -7,7 +7,13 @@
   </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="./main.tsx"></script>
+    <script type="module">
+      if (import.meta.hot) {
+        import('./main.tsx');
+      } else if (!window.location.pathname.includes('/docs/')) {
+        window.location.href = './docs/index.html';
+      }
+    </script>
   </body>
 </html>
 
