@@ -10,8 +10,12 @@ A simple React and TypeScript program for managing hospital bed assignments. The
    npm install
    ```
 3. Run the tests to ensure everything works:
-   ```sh
-   npm test
-   ```
+  ```sh
+  npm test
+  ```
 
+4. Build the static files for GitHub Pages (output in the `docs/` folder):
+   ```sh
+   npm run build
+   ```
 

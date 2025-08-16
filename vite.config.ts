@@ -15,5 +15,9 @@ export default defineConfig(async () => ({
     },
   },
   base: repo ? `/${repo}/` : '/',
+  build: {
+    outDir: 'docs',
+    emptyOutDir: true,
+  },
 }));
 
