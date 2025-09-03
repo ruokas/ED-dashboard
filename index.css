@@ -1,0 +1,7 @@
+/* Global stylesheet */
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  color: #1f2937; /* gray-800 */
+  background-color: #f1f5f9; /* gray-100 */
+}
