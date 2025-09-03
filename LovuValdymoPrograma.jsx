@@ -3,7 +3,8 @@ import { useSwipeable } from 'react-swipeable';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Toilet, Brush, Check, Undo2 } from 'lucide-react';
+import { Toilet, Brush, Check } from 'lucide-react';
+import Pranesimas from './Pranesimas.jsx';
 
 // ---------------- Konfigūracija -----------------
 const ZONOS = {
@@ -87,19 +88,6 @@ function LovosKortele({ lova, status, onWC, onClean, onCheck }) {
         </Card>
       )}
     </Droppable>
-  );
-}
-
-// ------------- Pranešimas Komponentas ------------
-function Pranesimas({ msg, onUndo }) {
-  const [rodoma,setRodoma]=useState(true);
-  useEffect(()=>{const id=setTimeout(()=>setRodoma(false),2000);return()=>clearTimeout(id)},[]);
-  if(!rodoma) return null;
-  return (
-    <div className="fixed bottom-1 left-1/2 -translate-x-1/2 bg-gray-800 text-white px-2 py-0.5 rounded flex items-center gap-1 text-[10px] z-50">
-      {msg}
-      <button onClick={onUndo} className="underline"><Undo2 size={10}/></button>
-    </div>
   );
 }
 
