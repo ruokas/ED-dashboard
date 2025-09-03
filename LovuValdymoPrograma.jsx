@@ -5,6 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Toilet, Brush, Check } from 'lucide-react';
 import Pranesimas from './Pranesimas.jsx';
+import safeParse from './safeParse.jsx';
 
 // ---------------- Konfigūracija -----------------
 const ZONOS = {
@@ -93,23 +94,17 @@ function LovosKortele({ lova, status, onWC, onClean, onCheck }) {
 
 // ------------- Pagrindinis Komponentas ------------
 export default function LovuValdymoPrograma() {
-  const [statusMap,setStatusMap]=useState(()=>{
-    const saugota=localStorage.getItem('lovuBusena');
-    return saugota
-      ? JSON.parse(saugota)
-      : Object.fromEntries(VISOS_LOVOS.map(b=>[b,{...NUMATYTA_BUSENA}]));
-  });
-  const [zonuPadejejas,setZonuPadejejas]=useState(()=>{
-    const saugota=localStorage.getItem('zonuPadejejas');
-    return saugota
-      ? JSON.parse(saugota)
-      : Object.fromEntries(Object.keys(ZONOS).map(z=>[z,'']));
-  });
+  const [statusMap,setStatusMap]=useState(()=>
+    safeParse('lovuBusena',Object.fromEntries(VISOS_LOVOS.map(b=>[b,{...NUMATYTA_BUSENA}])))
+  );
+  const [zonuPadejejas,setZonuPadejejas]=useState(()=>
+    safeParse('zonuPadejejas',Object.fromEntries(Object.keys(ZONOS).map(z=>[z,''])))
+  );
   const [filtras,setFiltras]=useState(FiltravimoRezimai.VISI);
   const [,tick]=useState(0);
   const [snack,setSnack]=useState(null);
   const [skirtukas,setSkirtukas]=useState('lovos');
-  const [zurnalas,setZurnalas]=useState(()=>JSON.parse(localStorage.getItem('lovuZurnalas')||'[]'));
+  const [zurnalas,setZurnalas]=useState(()=>safeParse('lovuZurnalas',[]));
   const [paieska,setPaieska]=useState('');
 
   useEffect(()=>void localStorage.setItem('lovuBusena',JSON.stringify(statusMap)),[statusMap]);
