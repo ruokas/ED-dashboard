@@ -1,14 +1,13 @@
 module.exports = {
-  preset: 'ts-jest/presets/default-esm',
-  testEnvironment: 'jsdom',
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
-  globals: {
-    'ts-jest': {
-      useESM: true,
-      diagnostics: false,
-    },
+  transform: {
+    '^.+\\.[jt]sx?$': ['babel-jest', {
+      presets: ['@babel/preset-env', ['@babel/preset-react', { runtime: 'automatic' }]]
+    }],
   },
+  testEnvironment: 'jsdom',
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   moduleNameMapper: {
-    '^(\\.{1,2}/.*)\\.js$': '$1',
+    '^@/(.*)$': '<rootDir>/$1',
   },
 };
+

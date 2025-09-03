@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useSwipeable } from 'react-swipeable';
-import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Toilet, Brush, Check, Undo2 } from 'lucide-react';
 
 // ---------------- Konfigūracija -----------------
-const ZONOS: Record<string, string[]> = {
+const ZONOS = {
   'IT Zona': ['IT1', 'IT2'],
   'Zona 1': ['1','2','3','P1','P2','P1/P2','P3','S1','S2','S3'],
   'Zona 2': ['4','5','6','P4','P5','P5/6P','P6','S4','S5','S6'],
@@ -17,19 +17,9 @@ const ZONOS: Record<string, string[]> = {
 const VISOS_LOVOS = Object.values(ZONOS).flat();
 
 // ------------- Tipai --------------------
-type LovosBusena = {
-  needsWC: boolean;
-  needsCleaning: boolean;
-  flaggedAt: number | null;
-  lastBy: string | null;
-  lastAt: number | null;
-  lastCheckedAt: number | null;
-  lastWCAt: number | null;
-  lastCleanAt: number | null;
-};
-enum FiltravimoRezimai { VISI, TUALETAS, VALYMAS, UŽDELTAS }
+const FiltravimoRezimai = { VISI: 'VISI', TUALETAS: 'TUALETAS', VALYMAS: 'VALYMAS', UZDELTAS: 'UZDELTAS' };
 
-const NUMATYTA_BUSENA: LovosBusena = {
+const NUMATYTA_BUSENA = {
   needsWC: false,
   needsCleaning: false,
   flaggedAt: null,
@@ -40,7 +30,7 @@ const NUMATYTA_BUSENA: LovosBusena = {
   lastCleanAt: null,
 };
 const dabar = () => Date.now();
-const laikasFormatu = (t: number) => {
+const laikasFormatu = t => {
   const secs = Math.floor((dabar() - t) / 1000);
   const m = Math.floor(secs / 60);
   const s = secs % 60;
@@ -48,7 +38,7 @@ const laikasFormatu = (t: number) => {
 };
 
 // ------------- LovosKortele Komponentas ------------
-function LovosKortele({ lova, status, onWC, onClean, onCheck }: { lova: string; status?: LovosBusena; onWC: (b:string)=>void; onClean:(b:string)=>void; onCheck:(b:string)=>void }) {
+function LovosKortele({ lova, status, onWC, onClean, onCheck }) {
   const s = status || NUMATYTA_BUSENA;
   const gesture = useSwipeable({
     onSwipedLeft: () => onWC(lova),
@@ -74,7 +64,7 @@ function LovosKortele({ lova, status, onWC, onClean, onCheck }: { lova: string; 
           {...provided.droppableProps}
           className={`m-1 p-1 w-[80px] h-[105px] ${rysys}`}
           style={{ backgroundColor: fonas }}
-          title={s.lastBy ? `${s.lastBy} • ${new Date(s.lastAt!).toLocaleTimeString()}` : ''}
+          title={s.lastBy ? `${s.lastBy} • ${new Date(s.lastAt).toLocaleTimeString()}` : ''}
         >
           <CardContent className="p-1 flex flex-col items-center h-full space-y-0.5">
             <span className="font-bold text-xs leading-tight">{lova}</span>
@@ -101,7 +91,7 @@ function LovosKortele({ lova, status, onWC, onClean, onCheck }: { lova: string; 
 }
 
 // ------------- Pranešimas Komponentas ------------
-function Pranesimas({ msg, onUndo }: { msg: string; onUndo: ()=>void }) {
+function Pranesimas({ msg, onUndo }) {
   const [rodoma,setRodoma]=useState(true);
   useEffect(()=>{const id=setTimeout(()=>setRodoma(false),2000);return()=>clearTimeout(id)},[]);
   if(!rodoma) return null;
@@ -115,23 +105,23 @@ function Pranesimas({ msg, onUndo }: { msg: string; onUndo: ()=>void }) {
 
 // ------------- Pagrindinis Komponentas ------------
 export default function LovuValdymoPrograma() {
-  const [statusMap,setStatusMap]=useState<Record<string,LovosBusena>>(()=>{
+  const [statusMap,setStatusMap]=useState(()=>{
     const saugota=localStorage.getItem('lovuBusena');
     return saugota
       ? JSON.parse(saugota)
       : Object.fromEntries(VISOS_LOVOS.map(b=>[b,{...NUMATYTA_BUSENA}]));
   });
-  const [zonuPadejejas,setZonuPadejejas]=useState<Record<string,string>>(()=>{
+  const [zonuPadejejas,setZonuPadejejas]=useState(()=>{
     const saugota=localStorage.getItem('zonuPadejejas');
     return saugota
       ? JSON.parse(saugota)
       : Object.fromEntries(Object.keys(ZONOS).map(z=>[z,'']));
   });
-  const [filtras,setFiltras]=useState<FiltravimoRezimai>(FiltravimoRezimai.VISI);
+  const [filtras,setFiltras]=useState(FiltravimoRezimai.VISI);
   const [,tick]=useState(0);
-  const [snack,setSnack]=useState<{lava:string;prev:LovosBusena;msg:string}|null>(null);
-  const [skirtukas,setSkirtukas]=useState<'lovos'|'zurnalas'>('lovos');
-  const [zurnalas,setZurnalas]=useState<any[]>(()=>JSON.parse(localStorage.getItem('lovuZurnalas')||'[]'));
+  const [snack,setSnack]=useState(null);
+  const [skirtukas,setSkirtukas]=useState('lovos');
+  const [zurnalas,setZurnalas]=useState(()=>JSON.parse(localStorage.getItem('lovuZurnalas')||'[]'));
   const [paieska,setPaieska]=useState('');
 
   useEffect(()=>void localStorage.setItem('lovuBusena',JSON.stringify(statusMap)),[statusMap]);
@@ -139,22 +129,22 @@ export default function LovuValdymoPrograma() {
   useEffect(()=>void localStorage.setItem('lovuZurnalas',JSON.stringify(zurnalas.slice(-200))),[zurnalas]);
   useEffect(()=>{const id=setInterval(()=>tick(x=>x+1),1000);return()=>clearInterval(id)},[]);
 
-  const pushZurnalas=(tekstas:string)=>setZurnalas(l=>[...l,{ts:dabar(),vartotojas:'Anon',tekstas}]);
-  const applyFilter=(lova:string)=>{
-    const s=statusMap[lova]||NUMATYTA_BUSENA;
+  const pushZurnalas=tekst=>setZurnalas(l=>[...l,{ts:dabar(),vartotojas:'Anon',tekstas:tekst}]);
+  const applyFilter=lov=>{
+    const s=statusMap[lov]||NUMATYTA_BUSENA;
     if(filtras===FiltravimoRezimai.TUALETAS) return s.needsWC;
     if(filtras===FiltravimoRezimai.VALYMAS) return s.needsCleaning;
-    if(filtras===FiltravimoRezimai.UŽDELTAS) return !s.lastCheckedAt || (dabar()-s.lastCheckedAt)>30*60*1000;
+    if(filtras===FiltravimoRezimai.UZDELTAS) return !s.lastCheckedAt || (dabar()-s.lastCheckedAt)>30*60*1000;
     return true;
   };
-  const updateLova=(lova:string,fn:(s:LovosBusena)=>LovosBusena,msg:string)=>{setStatusMap(prev=>{const old=prev[lova]||NUMATYTA_BUSENA;const next={...fn(old),lastBy:'Anon',lastAt:dabar()};setSnack({lava:lova,prev:old,msg});return{...prev,[lova]:next};});pushZurnalas(msg);};
+  const updateLova=(lova,fn,msg)=>{setStatusMap(prev=>{const old=prev[lova]||NUMATYTA_BUSENA;const next={...fn(old),lastBy:'Anon',lastAt:dabar()};setSnack({lava:lova,prev:old,msg});return{...prev,[lova]:next};});pushZurnalas(msg);};
   const toggleWC=b=>updateLova(b,s=>({...s,needsWC:!s.needsWC,lastWCAt:dabar(),flaggedAt:!s.needsWC?dabar():s.needsCleaning?s.flaggedAt:null}),`${b}: Tualetas`);
   const toggleCleaning=b=>updateLova(b,s=>({...s,needsCleaning:!s.needsCleaning,lastCleanAt:dabar(),flaggedAt:!s.needsCleaning?dabar():s.needsWC?s.flaggedAt:null}),`${b}: Valymas`);
   const markChecked=b=>updateLova(b,s=>({...s,lastCheckedAt:dabar()}),`${b}: Patikrinta`);
   const checkAll=z=>{const lovos=ZONOS[z]||[];setStatusMap(prev=>{const upd={...prev};lovos.forEach(l=>{upd[l]={...upd[l],lastCheckedAt:dabar()}});return upd});pushZurnalas(`Zona ${z} patikrinta`);};
   const undo=()=>{if(!snack)return;setStatusMap(p=>({...p,[snack.lava]:snack.prev}));setSnack(null);pushZurnalas(`Anuliuota ${snack.lava}`);};
-  const handleZone=(z:string,user:string)=>{setZonuPadejejas(prev=>{const next={...prev,[z]:user};pushZurnalas(`Padėjėjas ${user||'nėra'} ${z}`);return next;});const lovos=ZONOS[z]||[];setStatusMap(prev=>{const upd={...prev};lovos.forEach(l=>{upd[l]={...upd[l],lastCheckedAt:dabar()}});return upd});};
-  const onDragEnd=(res:DropResult)=>{if(!res.destination)return;pushZurnalas(`Perkelta ${res.draggableId} į ${res.destination.droppableId}`);};
+  const handleZone=(z,user)=>{setZonuPadejejas(prev=>{const next={...prev,[z]:user};pushZurnalas(`Padėjėjas ${user||'nėra'} ${z}`);return next;});const lovos=ZONOS[z]||[];setStatusMap(prev=>{const upd={...prev};lovos.forEach(l=>{upd[l]={...upd[l],lastCheckedAt:dabar()}});return upd});};
+  const onDragEnd=res=>{if(!res.destination)return;pushZurnalas(`Perkelta ${res.draggableId} į ${res.destination.droppableId}`);};
   const filteredLog=zurnalas.slice().reverse().filter(e=>e.tekstas.toLowerCase().includes(paieska.toLowerCase()));
   const exportCsv=()=>{const hd='laikas,vartotojas,tekstas';const rows=filteredLog.map(e=>[new Date(e.ts).toISOString(),e.vartotojas,`"${e.tekstas.replace(/"/g,'""')}"`].join(','));const csv=[hd,...rows].join('\n');const blob=new Blob([csv],{type:'text/csv'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`lovu_zurnalas_${new Date().toISOString()}.csv`;a.click();URL.revokeObjectURL(url);};
 
@@ -165,7 +155,7 @@ export default function LovuValdymoPrograma() {
         <Button className="flex-1 text-center" size="sm" onClick={()=>setFiltras(FiltravimoRezimai.VISI)} variant={filtras===FiltravimoRezimai.VISI?'default':'outline'}>Visi</Button>
         <Button className="flex-1 text-center" size="sm" onClick={()=>setFiltras(FiltravimoRezimai.TUALETAS)} variant={filtras===FiltravimoRezimai.TUALETAS?'default':'outline'}>Tualetas</Button>
         <Button className="flex-1 text-center" size="sm" onClick={()=>setFiltras(FiltravimoRezimai.VALYMAS)} variant={filtras===FiltravimoRezimai.VALYMAS?'default':'outline'}>Valymas</Button>
-        <Button className="flex-1 text-center" size="sm" onClick={()=>setFiltras(FiltravimoRezimai.UŽDELTAS)} variant={filtras===FiltravimoRezimai.UŽDELTAS?'default':'outline'}>Pradelstos</Button>
+        <Button className="flex-1 text-center" size="sm" onClick={()=>setFiltras(FiltravimoRezimai.UZDELTAS)} variant={filtras===FiltravimoRezimai.UZDELTAS?'default':'outline'}>Pradelstos</Button>
       </div>
       {/* Skirtukai */}
       <div className="flex gap-2 mb-1">

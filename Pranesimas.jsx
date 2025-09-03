@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Undo2 } from 'lucide-react';
 
-export default function Pranesimas({ msg, onUndo }: { msg: string; onUndo: () => void }) {
+export default function Pranesimas({ msg, onUndo }) {
   const [rodoma, setRodoma] = useState(true);
   useEffect(() => {
     setRodoma(true);
