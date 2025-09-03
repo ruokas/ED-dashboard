@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSwipeable } from 'react-swipeable';
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Toilet, Brush, Check } from 'lucide-react';
@@ -40,7 +40,7 @@ const laikasFormatu = t => {
 };
 
 // ------------- LovosKortele Komponentas ------------
-function LovosKortele({ lova, status, onWC, onClean, onCheck }) {
+function LovosKortele({ lova, index, status, onWC, onClean, onCheck }) {
   const s = status || NUMATYTA_BUSENA;
   const gesture = useSwipeable({
     onSwipedLeft: () => onWC(lova),
@@ -58,12 +58,13 @@ function LovosKortele({ lova, status, onWC, onClean, onCheck }) {
         : '';
 
   return (
-    <Droppable droppableId={lova} key={lova}>
+    <Draggable draggableId={lova} index={index}>
       {provided => (
         <Card
           {...gesture}
           ref={provided.innerRef}
-          {...provided.droppableProps}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
           className={`m-1 p-1 w-[80px] h-[105px] ${rysys}`}
           style={{ backgroundColor: fonas }}
           title={s.lastBy ? `${s.lastBy} • ${new Date(s.lastAt).toLocaleTimeString()}` : ''}
@@ -84,11 +85,10 @@ function LovosKortele({ lova, status, onWC, onClean, onCheck }) {
                 <Check size={12}/>
               </Button>
             </div>
-            {provided.placeholder}
           </CardContent>
         </Card>
       )}
-    </Droppable>
+    </Draggable>
   );
 }
 
@@ -96,6 +96,9 @@ function LovosKortele({ lova, status, onWC, onClean, onCheck }) {
 export default function LovuValdymoPrograma() {
   const [statusMap,setStatusMap]=useState(()=>
     safeParse('lovuBusena',Object.fromEntries(VISOS_LOVOS.map(b=>[b,{...NUMATYTA_BUSENA}])))
+  );
+  const [zonosLovos,setZonosLovos]=useState(()=>
+    safeParse('zonosLovos',ZONOS)
   );
   const [zonuPadejejas,setZonuPadejejas]=useState(()=>
     safeParse('zonuPadejejas',Object.fromEntries(Object.keys(ZONOS).map(z=>[z,''])))
@@ -108,6 +111,7 @@ export default function LovuValdymoPrograma() {
   const [paieska,setPaieska]=useState('');
 
   useEffect(()=>void localStorage.setItem('lovuBusena',JSON.stringify(statusMap)),[statusMap]);
+  useEffect(()=>void localStorage.setItem('zonosLovos',JSON.stringify(zonosLovos)),[zonosLovos]);
   useEffect(()=>void localStorage.setItem('zonuPadejejas',JSON.stringify(zonuPadejejas)),[zonuPadejejas]);
   useEffect(()=>void localStorage.setItem('lovuZurnalas',JSON.stringify(zurnalas.slice(-200))),[zurnalas]);
   useEffect(()=>{const id=setInterval(()=>tick(x=>x+1),1000);return()=>clearInterval(id)},[]);
@@ -124,10 +128,10 @@ export default function LovuValdymoPrograma() {
   const toggleWC=b=>updateLova(b,s=>({...s,needsWC:!s.needsWC,lastWCAt:dabar(),flaggedAt:!s.needsWC?dabar():s.needsCleaning?s.flaggedAt:null}),`${b}: Tualetas`);
   const toggleCleaning=b=>updateLova(b,s=>({...s,needsCleaning:!s.needsCleaning,lastCleanAt:dabar(),flaggedAt:!s.needsCleaning?dabar():s.needsWC?s.flaggedAt:null}),`${b}: Valymas`);
   const markChecked=b=>updateLova(b,s=>({...s,lastCheckedAt:dabar()}),`${b}: Patikrinta`);
-  const checkAll=z=>{const lovos=ZONOS[z]||[];setStatusMap(prev=>{const upd={...prev};lovos.forEach(l=>{upd[l]={...upd[l],lastCheckedAt:dabar()}});return upd});pushZurnalas(`Zona ${z} patikrinta`);};
+  const checkAll=z=>{const lovos=zonosLovos[z]||[];setStatusMap(prev=>{const upd={...prev};lovos.forEach(l=>{upd[l]={...upd[l],lastCheckedAt:dabar()}});return upd});pushZurnalas(`Zona ${z} patikrinta`);};
   const undo=()=>{if(!snack)return;setStatusMap(p=>({...p,[snack.lava]:snack.prev}));setSnack(null);pushZurnalas(`Anuliuota ${snack.lava}`);};
-  const handleZone=(z,user)=>{setZonuPadejejas(prev=>{const next={...prev,[z]:user};pushZurnalas(`Padėjėjas ${user||'nėra'} ${z}`);return next;});const lovos=ZONOS[z]||[];setStatusMap(prev=>{const upd={...prev};lovos.forEach(l=>{upd[l]={...upd[l],lastCheckedAt:dabar()}});return upd});};
-  const onDragEnd=res=>{if(!res.destination)return;pushZurnalas(`Perkelta ${res.draggableId} į ${res.destination.droppableId}`);};
+  const handleZone=(z,user)=>{setZonuPadejejas(prev=>{const next={...prev,[z]:user};pushZurnalas(`Padėjėjas ${user||'nėra'} ${z}`);return next;});const lovos=zonosLovos[z]||[];setStatusMap(prev=>{const upd={...prev};lovos.forEach(l=>{upd[l]={...upd[l],lastCheckedAt:dabar()}});return upd});};
+  const onDragEnd=res=>{if(!res.destination)return;const {source,destination,draggableId}=res;setZonosLovos(prev=>{const result={...prev};const src=Array.from(result[source.droppableId]);const [moved]=src.splice(source.index,1);if(source.droppableId===destination.droppableId){src.splice(destination.index,0,moved);result[source.droppableId]=src;}else{const dest=Array.from(result[destination.droppableId]);dest.splice(destination.index,0,moved);result[source.droppableId]=src;result[destination.droppableId]=dest;}return result;});pushZurnalas(`Perkelta ${draggableId} į ${destination.droppableId}`);};
   const filteredLog=zurnalas.slice().reverse().filter(e=>e.tekstas.toLowerCase().includes(paieska.toLowerCase()));
   const exportCsv=()=>{const hd='laikas,vartotojas,tekstas';const rows=filteredLog.map(e=>[new Date(e.ts).toISOString(),e.vartotojas,`"${e.tekstas.replace(/"/g,'""')}"`].join(','));const csv=[hd,...rows].join('\n');const blob=new Blob([csv],{type:'text/csv'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`lovu_zurnalas_${new Date().toISOString()}.csv`;a.click();URL.revokeObjectURL(url);};
 
@@ -147,16 +151,23 @@ export default function LovuValdymoPrograma() {
       </div>
       {skirtukas==='lovos'?(
         <DragDropContext onDragEnd={onDragEnd}>
-          {Object.entries(ZONOS).map(([zona,lovos])=>(
+          {Object.entries(zonosLovos).map(([zona,lovos])=>(
             <div key={zona} className="mb-3">
               <div className="flex items-center mb-1 gap-2">
                 <h2 className="font-semibold text-xs w-20 text-left">{zona}</h2>
                 <input className="border p-1 text-xs rounded w-20" placeholder="Padėjėjas" value={zonuPadejejas[zona]} onChange={e=>handleZone(zona,e.target.value)}/>
                 <Button size="icon" variant="outline" onClick={()=>checkAll(zona)} aria-label="Patikrinti visus"><Check size={14}/></Button>
               </div>
-              <div className="flex flex-wrap">
-                {lovos.filter(applyFilter).map(l=><LovosKortele key={l} lova={l} status={statusMap[l]} onWC={toggleWC} onClean={toggleCleaning} onCheck={markChecked}/>)}
-              </div>
+              <Droppable droppableId={zona}>
+                {provided=>(
+                  <div ref={provided.innerRef} {...provided.droppableProps} className="flex flex-wrap">
+                    {lovos.filter(applyFilter).map((l,i)=>(
+                      <LovosKortele key={l} index={i} lova={l} status={statusMap[l]} onWC={toggleWC} onClean={toggleCleaning} onCheck={markChecked}/>
+                    ))}
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Droppable>
             </div>
           ))}
         </DragDropContext>

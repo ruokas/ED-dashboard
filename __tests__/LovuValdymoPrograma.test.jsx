@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent, screen, within } from '@testing-library/react';
+import { render, fireEvent, screen, within, act } from '@testing-library/react';
 
 jest.mock(
   'react-swipeable',
@@ -9,14 +9,24 @@ jest.mock(
   { virtual: true }
 );
 
+let dndOnDragEnd;
 jest.mock(
   'react-beautiful-dnd',
-  () => ({
-    DragDropContext: ({ children }) => <div>{children}</div>,
-    Droppable: ({ children }) => (
-      <div>{children({ innerRef: jest.fn(), droppableProps: {}, placeholder: null })}</div>
-    )
-  }),
+  () => {
+    const React = require('react');
+    return {
+      DragDropContext: ({ children, onDragEnd }) => {
+        dndOnDragEnd = onDragEnd;
+        return <div>{children}</div>;
+      },
+      Droppable: ({ children }) => (
+        <div>{children({ innerRef: jest.fn(), droppableProps: {}, placeholder: null })}</div>
+      ),
+      Draggable: ({ children }) => (
+        <div>{children({ innerRef: jest.fn(), draggableProps: {}, dragHandleProps: {} })}</div>
+      )
+    };
+  },
   { virtual: true }
 );
 
@@ -93,5 +103,25 @@ describe('LovuValdymoPrograma', () => {
 
     const bed1Label = screen.getByText(/^1$/);
     expect(within(bed1Label.parentElement).getByText(/Patikrinta/)).toBeInTheDocument();
+  });
+
+  test('dragging moves bed between zones', () => {
+    render(<LovuValdymoPrograma />);
+
+    expect(within(screen.getByText('Zona 1').parentElement.parentElement).getByText(/^1$/)).toBeInTheDocument();
+    expect(within(screen.getByText('Zona 2').parentElement.parentElement).queryByText(/^1$/)).toBeNull();
+
+    act(() => {
+      dndOnDragEnd({
+        draggableId: '1',
+        source: { droppableId: 'Zona 1', index: 0 },
+        destination: { droppableId: 'Zona 2', index: 0 }
+      });
+    });
+
+    const zone1 = screen.getByText('Zona 1').parentElement.parentElement;
+    const zone2 = screen.getByText('Zona 2').parentElement.parentElement;
+    expect(within(zone2).getByText(/^1$/)).toBeInTheDocument();
+    expect(within(zone1).queryByText(/^1$/)).toBeNull();
   });
 });
