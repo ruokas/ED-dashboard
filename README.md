@@ -1,6 +1,6 @@
 # ED-dashboard
 
-A simple React and TypeScript program for managing hospital bed assignments. The main component `LovųValdymoPrograma.tsx` contains the dashboard logic.
+A simple React program for managing hospital bed assignments. The main component `LovuValdymoPrograma.jsx` contains the dashboard logic.
 
 ## Setup
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, act } from '@testing-library/react';
-import Pranesimas from '../Pranesimas';
+import Pranesimas from '../Pranesimas.jsx';
 
 jest.useFakeTimers();
 

@@ -12,8 +12,8 @@ jest.mock(
 jest.mock(
   'react-beautiful-dnd',
   () => ({
-    DragDropContext: ({ children }: any) => <div>{children}</div>,
-    Droppable: ({ children }: any) => (
+    DragDropContext: ({ children }) => <div>{children}</div>,
+    Droppable: ({ children }) => (
       <div>{children({ innerRef: jest.fn(), droppableProps: {}, placeholder: null })}</div>
     )
   }),
@@ -25,15 +25,11 @@ jest.mock(
   () => {
     const React = require('react');
     return {
-      Card: React.forwardRef<HTMLDivElement, any>(({ children, ...props }, ref) => (
-        <div ref={ref} {...props}>
-          {children}
-        </div>
+      Card: React.forwardRef(({ children, ...props }, ref) => (
+        <div ref={ref} {...props}>{children}</div>
       )),
-      CardContent: React.forwardRef<HTMLDivElement, any>(({ children, ...props }, ref) => (
-        <div ref={ref} {...props}>
-          {children}
-        </div>
+      CardContent: React.forwardRef(({ children, ...props }, ref) => (
+        <div ref={ref} {...props}>{children}</div>
       ))
     };
   },
@@ -43,12 +39,11 @@ jest.mock(
 jest.mock(
   '@/components/ui/button',
   () => ({
-    Button: ({ children, ...props }: any) => <button {...props}>{children}</button>
+    Button: ({ children, ...props }) => <button {...props}>{children}</button>
   }),
   { virtual: true }
 );
-
-const LovuValdymoPrograma = require('../LovųValdymoPrograma').default;
+import LovuValdymoPrograma from '../LovuValdymoPrograma.jsx';
 
 jest.useFakeTimers();
 
@@ -61,7 +56,7 @@ describe('LovuValdymoPrograma', () => {
     render(<LovuValdymoPrograma />);
 
     const bed1Label = screen.getByText(/^1$/);
-    const wcButton = within(bed1Label.parentElement!).getAllByRole('button')[0];
+    const wcButton = within(bed1Label.parentElement).getAllByRole('button')[0];
     fireEvent.click(wcButton);
 
     fireEvent.click(screen.getByText('Tualetas'));
@@ -74,7 +69,7 @@ describe('LovuValdymoPrograma', () => {
     render(<LovuValdymoPrograma />);
 
     const bed1Label = screen.getByText(/^1$/);
-    const wcButton = within(bed1Label.parentElement!).getAllByRole('button')[0];
+    const wcButton = within(bed1Label.parentElement).getAllByRole('button')[0];
     fireEvent.click(wcButton);
 
     fireEvent.click(screen.getByText('Tualetas'));
@@ -90,13 +85,13 @@ describe('LovuValdymoPrograma', () => {
   test('zone helper update marks beds checked', () => {
     render(<LovuValdymoPrograma />);
 
-    const row = screen.getByText('Zona 1').parentElement!;
+    const row = screen.getByText('Zona 1').parentElement;
     const input = within(row).getByPlaceholderText('Padėjėjas');
     fireEvent.change(input, { target: { value: 'Jonas' } });
 
-    expect((input as HTMLInputElement).value).toBe('Jonas');
+    expect(input.value).toBe('Jonas');
 
     const bed1Label = screen.getByText(/^1$/);
-    expect(within(bed1Label.parentElement!).getByText(/Patikrinta/)).toBeInTheDocument();
+    expect(within(bed1Label.parentElement).getByText(/Patikrinta/)).toBeInTheDocument();
   });
 });
