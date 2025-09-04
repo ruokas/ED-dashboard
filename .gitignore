@@ -1,5 +1,6 @@
 node_modules
 dist
+assets/
 
 # Ignore built JavaScript bundles
 main.js
@@ -7,7 +8,6 @@ main.js
 
 # Keep built files for GitHub Pages
 !docs/**/*.js
-!assets/**/*.js
 !postcss.config.js
 !tailwind.config.js
 
