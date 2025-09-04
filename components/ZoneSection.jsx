@@ -142,7 +142,7 @@ export default function ZoneSection({
             <div
               ref={provided.innerRef}
               {...provided.droppableProps}
-              className="grid grid-cols-[repeat(auto-fit,minmax(9rem,1fr))] sm:grid-cols-[repeat(auto-fit,minmax(10rem,1fr))] gap-2"
+              className="grid grid-cols-[repeat(auto-fit,minmax(9rem,1fr))] sm:grid-cols-[repeat(auto-fit,minmax(10rem,1fr))] md:grid-cols-[repeat(auto-fit,minmax(11rem,1fr))] lg:grid-cols-[repeat(auto-fit,minmax(12rem,1fr))] gap-2"
             >
               {lovos.filter(applyFilter).map((l, i) => (
                 <LovosKortele
