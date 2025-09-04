@@ -4,24 +4,7 @@ import { Droppable, Draggable } from 'react-beautiful-dnd';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Toilet, Brush, Check } from 'lucide-react';
-
-const NUMATYTA_BUSENA = {
-  needsWC: false,
-  needsCleaning: false,
-  flaggedAt: null,
-  lastBy: null,
-  lastAt: null,
-  lastCheckedAt: null,
-  lastWCAt: null,
-  lastCleanAt: null,
-};
-const dabar = () => Date.now();
-const laikasFormatu = t => {
-  const secs = Math.floor((dabar() - t) / 1000);
-  const m = Math.floor(secs / 60);
-  const s = secs % 60;
-  return `${m}:${String(s).padStart(2,'0')}`;
-};
+import { NUMATYTA_BUSENA, dabar, laikasFormatu } from '@/src/utils/bedState.js';
 
 function LovosKortele({ lova, index, status, onWC, onClean, onCheck }) {
   const s = status || NUMATYTA_BUSENA;
