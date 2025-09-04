@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useSwipeable } from 'react-swipeable';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import { Card, CardContent } from '@/components/ui/card';
+import { DragDropContext } from 'react-beautiful-dnd';
 import { Button } from '@/components/ui/button';
-import { Toilet, Brush, Check } from 'lucide-react';
 import Pranesimas from './Pranesimas.jsx';
 import useLocalStorageState from './hooks/useLocalStorageState.js';
+import Filters from './components/Filters.jsx';
+import Tabs from './components/Tabs.jsx';
+import ZoneSection from './components/ZoneSection.jsx';
 
 // ---------------- Konfigūracija -----------------
 const ZONOS = {
@@ -32,65 +32,6 @@ const NUMATYTA_BUSENA = {
   lastCleanAt: null,
 };
 const dabar = () => Date.now();
-const laikasFormatu = t => {
-  const secs = Math.floor((dabar() - t) / 1000);
-  const m = Math.floor(secs / 60);
-  const s = secs % 60;
-  return `${m}:${String(s).padStart(2,'0')}`;
-};
-
-// ------------- LovosKortele Komponentas ------------
-function LovosKortele({ lova, index, status, onWC, onClean, onCheck }) {
-  const s = status || NUMATYTA_BUSENA;
-  const gesture = useSwipeable({
-    onSwipedLeft: () => onWC(lova),
-    onSwipedRight: () => onClean(lova),
-    delta: 50,
-  });
-  const pradelsta = s.lastCheckedAt ? (dabar() - s.lastCheckedAt) > 30*60*1000 : true;
-  const fonas = '#E2E8F0';
-  const rysys = lova.startsWith('IT')
-    ? 'border-2 border-blue-400'
-    : pradelsta
-      ? 'animate-pulse border-2 border-red-500'
-      : s.needsWC || s.needsCleaning
-        ? 'border-2 border-blue-400 animate-pulse'
-        : '';
-
-  return (
-    <Draggable draggableId={lova} index={index}>
-      {provided => (
-        <Card
-          {...gesture}
-          ref={provided.innerRef}
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-          className={`m-1 p-1 w-[80px] h-[105px] ${rysys}`}
-          style={{ backgroundColor: fonas }}
-          title={s.lastBy ? `${s.lastBy} • ${new Date(s.lastAt).toLocaleTimeString()}` : ''}
-        >
-          <CardContent className="p-1 flex flex-col items-center h-full space-y-0.5">
-            <span className="font-bold text-xs leading-tight">{lova}</span>
-            {s.lastCheckedAt && <span className="text-[7px]">Patikrinta: {laikasFormatu(s.lastCheckedAt)}</span>}
-            {s.lastWCAt && <span className="text-[7px]">Tual.: {laikasFormatu(s.lastWCAt)}</span>}
-            {s.lastCleanAt && <span className="text-[7px]">Val.: {laikasFormatu(s.lastCleanAt)}</span>}
-            <div className="flex gap-1 mt-auto">
-              <Button size="icon" className="w-5 h-5" variant={s.needsWC?'destructive':'outline'} onClick={e=>{e.stopPropagation(); onWC(lova)}}>
-                <Toilet size={12}/>
-              </Button>
-              <Button size="icon" className="w-5 h-5" variant={s.needsCleaning?'destructive':'outline'} onClick={e=>{e.stopPropagation(); onClean(lova)}}>
-                <Brush size={12}/>
-              </Button>
-              <Button size="icon" className="w-5 h-5" variant="outline" onClick={e=>{e.stopPropagation(); onCheck(lova)}}>
-                <Check size={12}/>
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-      )}
-    </Draggable>
-  );
-}
 
 // ------------- Pagrindinis Komponentas ------------
 export default function LovuValdymoPrograma() {
@@ -133,38 +74,24 @@ export default function LovuValdymoPrograma() {
 
   return(
     <div className="p-2 bg-gray-100 min-h-screen">
-      {/* Filtrai */}
-      <div className="flex gap-2 mb-1">
-        <Button className="flex-1 text-center" size="sm" onClick={()=>setFiltras(FiltravimoRezimai.VISI)} variant={filtras===FiltravimoRezimai.VISI?'default':'outline'}>Visi</Button>
-        <Button className="flex-1 text-center" size="sm" onClick={()=>setFiltras(FiltravimoRezimai.TUALETAS)} variant={filtras===FiltravimoRezimai.TUALETAS?'default':'outline'}>Tualetas</Button>
-        <Button className="flex-1 text-center" size="sm" onClick={()=>setFiltras(FiltravimoRezimai.VALYMAS)} variant={filtras===FiltravimoRezimai.VALYMAS?'default':'outline'}>Valymas</Button>
-        <Button className="flex-1 text-center" size="sm" onClick={()=>setFiltras(FiltravimoRezimai.UZDELTAS)} variant={filtras===FiltravimoRezimai.UZDELTAS?'default':'outline'}>Pradelstos</Button>
-      </div>
-      {/* Skirtukai */}
-      <div className="flex gap-2 mb-1">
-        <Button className="flex-1 text-center" size="sm" onClick={()=>setSkirtukas('lovos')} variant={skirtukas==='lovos'?'default':'outline'}>Lovos</Button>
-        <Button className="flex-1 text-center" size="sm" onClick={()=>setSkirtukas('zurnalas')} variant={skirtukas==='zurnalas'?'default':'outline'}>Žurnalas</Button>
-      </div>
+      <Filters filtras={filtras} setFiltras={setFiltras} FiltravimoRezimai={FiltravimoRezimai}/>
+      <Tabs skirtukas={skirtukas} setSkirtukas={setSkirtukas}/>
       {skirtukas==='lovos'?(
         <DragDropContext onDragEnd={onDragEnd}>
-          {Object.entries(zonosLovos).map(([zona,lovos])=>(
-            <div key={zona} className="mb-3">
-              <div className="flex items-center mb-1 gap-2">
-                <h2 className="font-semibold text-xs w-20 text-left">{zona}</h2>
-                <input className="border p-1 text-xs rounded w-20" placeholder="Padėjėjas" value={zonuPadejejas[zona]} onChange={e=>handleZone(zona,e.target.value)}/>
-                <Button size="icon" variant="outline" onClick={()=>checkAll(zona)} aria-label="Patikrinti visus"><Check size={14}/></Button>
-              </div>
-              <Droppable droppableId={zona}>
-                {provided=>(
-                  <div ref={provided.innerRef} {...provided.droppableProps} className="flex flex-wrap">
-                    {lovos.filter(applyFilter).map((l,i)=>(
-                      <LovosKortele key={l} index={i} lova={l} status={statusMap[l]} onWC={toggleWC} onClean={toggleCleaning} onCheck={markChecked}/>
-                    ))}
-                    {provided.placeholder}
-                  </div>
-                )}
-              </Droppable>
-            </div>
+          {Object.entries(zonosLovos).map(([zona,lovos])=> (
+            <ZoneSection
+              key={zona}
+              zona={zona}
+              lovos={lovos}
+              statusMap={statusMap}
+              applyFilter={applyFilter}
+              onWC={toggleWC}
+              onClean={toggleCleaning}
+              onCheck={markChecked}
+              padejejas={zonuPadejejas[zona]}
+              onPadejejasChange={user=>handleZone(zona,user)}
+              checkAll={()=>checkAll(zona)}
+            />
           ))}
         </DragDropContext>
       ):(
