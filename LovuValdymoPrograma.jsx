@@ -57,7 +57,7 @@ export default function LovuValdymoPrograma() {
       localStorage.removeItem('lovuZurnalas');
       localStorage.removeItem('zonuPadejejas');
     }
-  },[]);
+  },[zonosLovos,ZONOS]);
 
   useEffect(()=>{document.documentElement.classList.toggle('dark',dark);},[dark]);
 

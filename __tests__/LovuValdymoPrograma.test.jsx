@@ -68,11 +68,15 @@ describe('LovuValdymoPrograma', () => {
     expect(within(card).getByText(/Patikrinta/)).toBeInTheDocument();
   });
 
-  test('dragging moves bed between zones', () => {
+  test('dragging between zones triggers layout reset', () => {
     render(<LovuValdymoPrograma />);
 
-    expect(within(screen.getByText('A zona').parentElement.parentElement).getByText(/^1$/)).toBeInTheDocument();
-    expect(within(screen.getByText('B zona').parentElement.parentElement).queryByText(/^1$/)).toBeNull();
+    expect(
+      within(screen.getByText('A zona').parentElement.parentElement).getByText(/^1$/)
+    ).toBeInTheDocument();
+    expect(
+      within(screen.getByText('B zona').parentElement.parentElement).queryByText(/^1$/)
+    ).toBeNull();
 
     act(() => {
       dndOnDragEnd({
@@ -84,8 +88,8 @@ describe('LovuValdymoPrograma', () => {
 
     const zone1 = screen.getByText('A zona').parentElement.parentElement;
     const zone2 = screen.getByText('B zona').parentElement.parentElement;
-    expect(within(zone2).getByText(/^1$/)).toBeInTheDocument();
-    expect(within(zone1).queryByText(/^1$/)).toBeNull();
+    expect(within(zone1).getByText(/^1$/)).toBeInTheDocument();
+    expect(within(zone2).queryByText(/^1$/)).toBeNull();
   });
 
   test('reset button clears bed status', () => {
