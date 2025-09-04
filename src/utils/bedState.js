@@ -18,4 +18,7 @@ export const laikasFormatu = t => {
   return `${m}:${String(s).padStart(2,'0')}`;
 };
 
-export default { NUMATYTA_BUSENA, dabar, laikasFormatu };
+export const isOverdue = (lastCheckedAt, limitMs = 30 * 60 * 1000) => {
+  return !lastCheckedAt || (dabar() - lastCheckedAt) > limitMs;
+};
+export default { NUMATYTA_BUSENA, dabar, laikasFormatu, isOverdue };
