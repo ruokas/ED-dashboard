@@ -30,9 +30,15 @@ jest.mock(
       Card: React.forwardRef(({ children, ...props }, ref) => (
         <div ref={ref} {...props}>{children}</div>
       )),
+      CardHeader: React.forwardRef(({ children, ...props }, ref) => (
+        <div ref={ref} {...props}>{children}</div>
+      )),
       CardContent: React.forwardRef(({ children, ...props }, ref) => (
         <div ref={ref} {...props}>{children}</div>
-      ))
+      )),
+      CardFooter: React.forwardRef(({ children, ...props }, ref) => (
+        <div ref={ref} {...props}>{children}</div>
+      )),
     };
   },
   { virtual: true }

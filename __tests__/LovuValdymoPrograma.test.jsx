@@ -23,7 +23,8 @@ describe('LovuValdymoPrograma', () => {
     render(<LovuValdymoPrograma />);
 
     const bed1Label = screen.getByText(/^1$/);
-    const wcButton = within(bed1Label.parentElement).getAllByRole('button')[0];
+    const card = bed1Label.parentElement.parentElement;
+    const wcButton = within(card).getAllByRole('button')[0];
     fireEvent.click(wcButton);
 
     fireEvent.click(screen.getByText('Tualetas'));
@@ -36,7 +37,8 @@ describe('LovuValdymoPrograma', () => {
     render(<LovuValdymoPrograma />);
 
     const bed1Label = screen.getByText(/^1$/);
-    const wcButton = within(bed1Label.parentElement).getAllByRole('button')[0];
+    const card = bed1Label.parentElement.parentElement;
+    const wcButton = within(card).getAllByRole('button')[0];
     fireEvent.click(wcButton);
 
     fireEvent.click(screen.getByText('Tualetas'));
@@ -59,7 +61,8 @@ describe('LovuValdymoPrograma', () => {
     expect(input.value).toBe('Jonas');
 
     const bed1Label = screen.getByText(/^1$/);
-    expect(within(bed1Label.parentElement).getByText(/Patikrinta/)).toBeInTheDocument();
+    const card = bed1Label.parentElement.parentElement;
+    expect(within(card).getByText(/Patikrinta/)).toBeInTheDocument();
   });
 
   test('dragging moves bed between zones', () => {
