@@ -30,7 +30,7 @@ function LovosKortele({ lova, index, status, onWC, onClean, onCheck }) {
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          className={`p-1 w-full max-w-[6rem] aspect-[3/4] bg-gray-200 ${rysys}`}
+          className={`p-1 w-full h-24 sm:h-28 bg-gray-200 ${rysys}`}
           title={s.lastBy ? `${s.lastBy} • ${new Date(s.lastAt).toLocaleTimeString()}` : ''}
         >
           <CardContent className="p-1 flex flex-col items-center h-full space-y-0.5">
@@ -90,7 +90,7 @@ export default function ZoneSection({
       </div>
       <Droppable droppableId={zona}>
         {provided => (
-            <div ref={provided.innerRef} {...provided.droppableProps} className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 justify-items-center">
+          <div ref={provided.innerRef} {...provided.droppableProps} className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
             {lovos.filter(applyFilter).map((l, i) => (
               <LovosKortele
                 key={l}
