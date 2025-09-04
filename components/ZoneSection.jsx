@@ -35,21 +35,21 @@ function LovosKortele({ lova, index, status, onWC, onClean, onCheck }) {
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          className={`flex flex-col p-1 w-full h-24 sm:h-28 ${rysys}`}
+          className={`flex flex-col p-2 w-full h-28 sm:h-32 hover:scale-105 transition-transform ${rysys}`}
           title={s.lastBy ? `${s.lastBy} • ${new Date(s.lastAt).toLocaleTimeString()}` : ''}
         >
           <CardHeader className="p-1 flex justify-center">
-            <span className="font-bold text-xs leading-tight">{lova}</span>
+            <span className="text-sm leading-tight">{lova}</span>
           </CardHeader>
           <CardContent className="p-1 flex flex-col items-center flex-1 space-y-0.5">
             {s.lastCheckedAt && (
-              <span className="text-[7px]">Patikrinta: {laikasFormatu(s.lastCheckedAt)}</span>
+              <span className="text-xs">Patikrinta: {laikasFormatu(s.lastCheckedAt)}</span>
             )}
             {s.lastWCAt && (
-              <span className="text-[7px]">Tual.: {laikasFormatu(s.lastWCAt)}</span>
+              <span className="text-xs">Tual.: {laikasFormatu(s.lastWCAt)}</span>
             )}
             {s.lastCleanAt && (
-              <span className="text-[7px]">Val.: {laikasFormatu(s.lastCleanAt)}</span>
+              <span className="text-xs">Val.: {laikasFormatu(s.lastCleanAt)}</span>
             )}
           </CardContent>
           <CardFooter className="p-1 flex gap-1 justify-center">
