@@ -84,4 +84,20 @@ describe('LovuValdymoPrograma', () => {
     expect(within(zone2).getByText(/^1$/)).toBeInTheDocument();
     expect(within(zone1).queryByText(/^1$/)).toBeNull();
   });
+
+  test('reset button clears bed status', () => {
+    render(<LovuValdymoPrograma />);
+
+    const bed1Label = screen.getByText(/^1$/);
+    const card = bed1Label.parentElement.parentElement;
+    const buttons = within(card).getAllByRole('button');
+    const wcButton = buttons[0];
+    const resetButton = buttons[3];
+
+    fireEvent.click(wcButton);
+    fireEvent.click(resetButton);
+    fireEvent.click(screen.getByText('Tualetas'));
+
+    expect(screen.queryByText(/^1$/)).not.toBeInTheDocument();
+  });
 });

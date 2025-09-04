@@ -6,7 +6,7 @@ import useLocalStorageState from './hooks/useLocalStorageState.js';
 import Filters from './components/Filters.jsx';
 import Tabs from './components/Tabs.jsx';
 import ZoneSection from './components/ZoneSection.jsx';
-import { NUMATYTA_BUSENA, dabar, isOverdue } from '@/src/utils/bedState.js';
+import { NUMATYTA_BUSENA, dabar, isOverdue, resetBedStatus } from '@/src/utils/bedState.js';
 
 // ---------------- Konfigūracija -----------------
 const ZONOS = {
@@ -58,6 +58,7 @@ export default function LovuValdymoPrograma() {
   const toggleWC=b=>updateLova(b,s=>({...s,needsWC:!s.needsWC,lastWCAt:dabar(),flaggedAt:!s.needsWC?dabar():s.needsCleaning?s.flaggedAt:null}),`${b}: Tualetas`);
   const toggleCleaning=b=>updateLova(b,s=>({...s,needsCleaning:!s.needsCleaning,lastCleanAt:dabar(),flaggedAt:!s.needsCleaning?dabar():s.needsWC?s.flaggedAt:null}),`${b}: Valymas`);
   const markChecked=b=>updateLova(b,s=>({...s,lastCheckedAt:dabar()}),`${b}: Patikrinta`);
+  const resetLova=b=>{setStatusMap(prev=>{const old=prev[b]||NUMATYTA_BUSENA;const next=resetBedStatus();setSnack({bed:b,prev:old,msg:`${b}: Atstatyta`});return{...prev,[b]:next};});pushZurnalas(`${b}: Atstatyta`);};
   const checkAll=z=>{const lovos=zonosLovos[z]||[];setStatusMap(prev=>{const upd={...prev};lovos.forEach(l=>{upd[l]={...upd[l],lastCheckedAt:dabar()}});return upd});pushZurnalas(`Zona ${z} patikrinta`);};
   const undo=()=>{if(!snack)return;setStatusMap(p=>({...p,[snack.bed]:snack.prev}));setSnack(null);pushZurnalas(`Anuliuota ${snack.bed}`);};
   const handleZone=(z,user)=>{setZonuPadejejas(prev=>{const next={...prev,[z]:user};pushZurnalas(`Padėjėjas ${user||'nėra'} ${z}`);return next;});const lovos=zonosLovos[z]||[];setStatusMap(prev=>{const upd={...prev};lovos.forEach(l=>{upd[l]={...upd[l],lastCheckedAt:dabar()}});return upd});};
@@ -83,6 +84,7 @@ export default function LovuValdymoPrograma() {
                 onWC={toggleWC}
                 onClean={toggleCleaning}
                 onCheck={markChecked}
+                onReset={resetLova}
                 padejejas={zonuPadejejas[zona]}
                 onPadejejasChange={user=>handleZone(zona,user)}
                 checkAll={()=>checkAll(zona)}

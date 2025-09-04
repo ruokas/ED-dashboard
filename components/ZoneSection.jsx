@@ -3,10 +3,10 @@ import { useSwipeable } from 'react-swipeable';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import { Card, CardHeader, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Toilet, Brush, Check, ChevronDown, ChevronRight } from 'lucide-react';
+import { Toilet, Brush, Check, ChevronDown, ChevronRight, RotateCcw } from 'lucide-react';
 import { NUMATYTA_BUSENA, laikasFormatu, isOverdue } from '@/src/utils/bedState.js';
 
-function LovosKortele({ lova, index, status, onWC, onClean, onCheck }) {
+function LovosKortele({ lova, index, status, onWC, onClean, onCheck, onReset }) {
   const s = status || NUMATYTA_BUSENA;
   const gesture = useSwipeable({
     onSwipedLeft: () => onWC(lova),
@@ -86,6 +86,17 @@ function LovosKortele({ lova, index, status, onWC, onClean, onCheck }) {
             >
               <Check size={20}/>
             </Button>
+            <Button
+              size="icon-sm"
+              variant="outline"
+              aria-label="Reset status"
+              onClick={e => {
+                e.stopPropagation();
+                onReset(lova);
+              }}
+            >
+              <RotateCcw size={20}/>
+            </Button>
           </CardFooter>
         </Card>
       )}
@@ -101,6 +112,7 @@ export default function ZoneSection({
   onWC,
   onClean,
   onCheck,
+  onReset,
   padejejas,
   onPadejejasChange,
   checkAll,
@@ -153,6 +165,7 @@ export default function ZoneSection({
                   onWC={onWC}
                   onClean={onClean}
                   onCheck={onCheck}
+                  onReset={onReset}
                 />
               ))}
               {provided.placeholder}

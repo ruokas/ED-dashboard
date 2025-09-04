@@ -9,6 +9,8 @@ export const NUMATYTA_BUSENA = {
   lastCleanAt: null,
 };
 
+export const resetBedStatus = () => ({ ...NUMATYTA_BUSENA });
+
 export const dabar = () => Date.now();
 
 export const laikasFormatu = t => {
@@ -21,4 +23,4 @@ export const laikasFormatu = t => {
 export const isOverdue = (lastCheckedAt, limitMs = 30 * 60 * 1000) => {
   return !lastCheckedAt || (dabar() - lastCheckedAt) > limitMs;
 };
-export default { NUMATYTA_BUSENA, dabar, laikasFormatu, isOverdue };
+export default { NUMATYTA_BUSENA, dabar, laikasFormatu, isOverdue, resetBedStatus };
