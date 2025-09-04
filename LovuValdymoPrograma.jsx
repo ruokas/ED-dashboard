@@ -51,12 +51,12 @@ export default function LovuValdymoPrograma() {
     if(filtras===FiltravimoRezimai.UZDELTAS) return !s.lastCheckedAt || (dabar()-s.lastCheckedAt)>30*60*1000;
     return true;
   };
-  const updateLova=(lova,fn,msg)=>{setStatusMap(prev=>{const old=prev[lova]||NUMATYTA_BUSENA;const next={...fn(old),lastBy:'Anon',lastAt:dabar()};setSnack({lava:lova,prev:old,msg});return{...prev,[lova]:next};});pushZurnalas(msg);};
+  const updateLova=(lova,fn,msg)=>{setStatusMap(prev=>{const old=prev[lova]||NUMATYTA_BUSENA;const next={...fn(old),lastBy:'Anon',lastAt:dabar()};setSnack({bed:lova,prev:old,msg});return{...prev,[lova]:next};});pushZurnalas(msg);};
   const toggleWC=b=>updateLova(b,s=>({...s,needsWC:!s.needsWC,lastWCAt:dabar(),flaggedAt:!s.needsWC?dabar():s.needsCleaning?s.flaggedAt:null}),`${b}: Tualetas`);
   const toggleCleaning=b=>updateLova(b,s=>({...s,needsCleaning:!s.needsCleaning,lastCleanAt:dabar(),flaggedAt:!s.needsCleaning?dabar():s.needsWC?s.flaggedAt:null}),`${b}: Valymas`);
   const markChecked=b=>updateLova(b,s=>({...s,lastCheckedAt:dabar()}),`${b}: Patikrinta`);
   const checkAll=z=>{const lovos=zonosLovos[z]||[];setStatusMap(prev=>{const upd={...prev};lovos.forEach(l=>{upd[l]={...upd[l],lastCheckedAt:dabar()}});return upd});pushZurnalas(`Zona ${z} patikrinta`);};
-  const undo=()=>{if(!snack)return;setStatusMap(p=>({...p,[snack.lava]:snack.prev}));setSnack(null);pushZurnalas(`Anuliuota ${snack.lava}`);};
+  const undo=()=>{if(!snack)return;setStatusMap(p=>({...p,[snack.bed]:snack.prev}));setSnack(null);pushZurnalas(`Anuliuota ${snack.bed}`);};
   const handleZone=(z,user)=>{setZonuPadejejas(prev=>{const next={...prev,[z]:user};pushZurnalas(`Padėjėjas ${user||'nėra'} ${z}`);return next;});const lovos=zonosLovos[z]||[];setStatusMap(prev=>{const upd={...prev};lovos.forEach(l=>{upd[l]={...upd[l],lastCheckedAt:dabar()}});return upd});};
   const onDragEnd=res=>{if(!res.destination)return;const {source,destination,draggableId}=res;setZonosLovos(prev=>{const result={...prev};const src=Array.from(result[source.droppableId]);const [moved]=src.splice(source.index,1);if(source.droppableId===destination.droppableId){src.splice(destination.index,0,moved);result[source.droppableId]=src;}else{const dest=Array.from(result[destination.droppableId]);dest.splice(destination.index,0,moved);result[source.droppableId]=src;result[destination.droppableId]=dest;}return result;});pushZurnalas(`Perkelta ${draggableId} į ${destination.droppableId}`);};
   const filteredLog=zurnalas.slice().reverse().filter(e=>e.tekstas.toLowerCase().includes(paieska.toLowerCase()));
