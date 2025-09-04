@@ -44,6 +44,21 @@ export default function LovuValdymoPrograma() {
   const [paieska,setPaieska]=useState('');
   const [dark,setDark]=useState(false);
 
+  useEffect(()=>{
+    const lovos = Object.values(zonosLovos).flat();
+    const legacy = lovos.some(v=>/[PS]/.test(v));
+    const mismatch = Object.entries(ZONOS).some(([z,b])=>{
+      const cur = zonosLovos[z];
+      return !cur || cur.length!==b.length;
+    });
+    if(legacy||mismatch){
+      setZonosLovos(ZONOS);
+      localStorage.removeItem('lovuBusena');
+      localStorage.removeItem('lovuZurnalas');
+      localStorage.removeItem('zonuPadejejas');
+    }
+  },[]);
+
   useEffect(()=>{document.documentElement.classList.toggle('dark',dark);},[dark]);
 
   useInterval(() => tick(x => x + 1), 1000);
