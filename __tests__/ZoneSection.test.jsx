@@ -59,3 +59,21 @@ describe('ZoneSection collapse toggle', () => {
     expect(queryByText('1')).toBeInTheDocument();
   });
 });
+
+describe('ZoneSection card layout', () => {
+  afterEach(() => cleanup());
+
+  test('buttons remain within card bounds', () => {
+    renderZone();
+    const card = screen.getByText('1').closest('div');
+    const cardRect = card.getBoundingClientRect();
+    const buttons = card.querySelectorAll('button');
+    buttons.forEach(btn => {
+      const rect = btn.getBoundingClientRect();
+      expect(rect.left).toBeGreaterThanOrEqual(cardRect.left);
+      expect(rect.right).toBeLessThanOrEqual(cardRect.right);
+      expect(rect.top).toBeGreaterThanOrEqual(cardRect.top);
+      expect(rect.bottom).toBeLessThanOrEqual(cardRect.bottom);
+    });
+  });
+});
