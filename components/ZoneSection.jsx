@@ -14,13 +14,18 @@ function LovosKortele({ lova, index, status, onWC, onClean, onCheck }) {
     delta: 50,
   });
   const pradelsta = s.lastCheckedAt ? (dabar() - s.lastCheckedAt) > 30*60*1000 : true;
+  // Color legend:
+  // - Blue: IT beds
+  // - Red: overdue check
+  // - Green: needs WC or cleaning
+  // - Gray: normal status
   const rysys = lova.startsWith('IT')
-    ? 'border-2 border-blue-400'
+    ? 'border-2 border-blue-400 bg-blue-100 text-blue-800'
     : pradelsta
-      ? 'animate-pulse border-2 border-red-500'
+      ? 'animate-pulse border-2 border-red-500 bg-red-100 text-red-800'
       : s.needsWC || s.needsCleaning
-        ? 'border-2 border-blue-400 animate-pulse'
-        : '';
+        ? 'border-2 border-green-400 bg-green-100 text-green-800 animate-pulse'
+        : 'bg-gray-200';
 
   return (
     <Draggable draggableId={lova} index={index}>
@@ -30,7 +35,7 @@ function LovosKortele({ lova, index, status, onWC, onClean, onCheck }) {
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          className={`p-1 w-full h-24 sm:h-28 bg-gray-200 ${rysys}`}
+          className={`p-1 w-full h-24 sm:h-28 ${rysys}`}
           title={s.lastBy ? `${s.lastBy} • ${new Date(s.lastAt).toLocaleTimeString()}` : ''}
         >
           <CardContent className="p-1 flex flex-col items-center h-full space-y-0.5">
