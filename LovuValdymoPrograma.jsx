@@ -40,6 +40,9 @@ export default function LovuValdymoPrograma() {
   const [skirtukas,setSkirtukas]=useState('lovos');
   const [zurnalas,setZurnalas]=useLocalStorageState('lovuZurnalas',[]);
   const [paieska,setPaieska]=useState('');
+  const [dark,setDark]=useState(false);
+
+  useEffect(()=>{document.documentElement.classList.toggle('dark',dark);},[dark]);
   
   useEffect(()=>{const id=setInterval(()=>tick(x=>x+1),1000);return()=>clearInterval(id)},[]);
 
@@ -64,7 +67,8 @@ export default function LovuValdymoPrograma() {
 
   return(
     <div className="mx-auto max-w-screen-xl">
-      <div className="p-2 bg-gray-100 min-h-screen">
+      <div className="p-2 bg-gray-100 dark:bg-gray-900 min-h-screen">
+        <Button size="sm" className="fixed top-2 right-2" onClick={()=>setDark(d=>!d)}>{dark? 'Light':'Dark'}</Button>
         <Filters filtras={filtras} setFiltras={setFiltras} FiltravimoRezimai={FiltravimoRezimai}/>
         <Tabs skirtukas={skirtukas} setSkirtukas={setSkirtukas}/>
         {skirtukas==='lovos'?(
@@ -88,7 +92,7 @@ export default function LovuValdymoPrograma() {
         ):(
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <input className="border p-1 rounded text-xs flex-1" placeholder="Ieškoti žurnale" value={paieska} onChange={e=>setPaieska(e.target.value)}/>
+              <input className="border p-1 rounded text-xs flex-1 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100" placeholder="Ieškoti žurnale" value={paieska} onChange={e=>setPaieska(e.target.value)}/>
               <Button size="sm" onClick={exportCsv}>Eksportuoti CSV</Button>
             </div>
             <ul className="text-xs space-y-1 max-h-[70vh] overflow-auto">

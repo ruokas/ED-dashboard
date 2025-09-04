@@ -19,13 +19,13 @@ function LovosKortele({ lova, index, status, onWC, onClean, onCheck }) {
   // - Red: overdue check
   // - Green: needs WC or cleaning
   // - Gray: normal status
-  const rysys = lova.startsWith('IT')
-    ? 'border-2 border-blue-400 bg-blue-100 text-blue-800'
-    : pradelsta
-      ? 'animate-pulse border-2 border-red-500 bg-red-100 text-red-800'
-      : s.needsWC || s.needsCleaning
-        ? 'border-2 border-green-400 bg-green-100 text-green-800 animate-pulse'
-        : 'bg-gray-200';
+    const rysys = lova.startsWith('IT')
+      ? 'border-2 border-blue-400 bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100'
+      : pradelsta
+        ? 'animate-pulse border-2 border-red-500 bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-100 dark:border-red-400'
+        : s.needsWC || s.needsCleaning
+          ? 'border-2 border-green-400 bg-green-100 text-green-800 animate-pulse dark:bg-green-900 dark:text-green-100 dark:border-green-400'
+          : 'bg-gray-200 dark:bg-gray-700 dark:text-gray-100';
 
   return (
     <Draggable draggableId={lova} index={index}>
@@ -102,7 +102,7 @@ export default function ZoneSection({
       <div className="flex items-center mb-1 gap-2">
         <h2 className="font-semibold text-xs flex-1 min-w-0 text-left truncate">{zona}</h2>
         <input
-          className="border p-1 text-xs rounded flex-1 min-w-0"
+          className="border p-1 text-xs rounded flex-1 min-w-0 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
           placeholder="Padėjėjas"
           value={padejejas}
           onChange={e => onPadejejasChange(e.target.value)}
