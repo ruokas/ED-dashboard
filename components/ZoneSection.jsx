@@ -44,13 +44,37 @@ function LovosKortele({ lova, index, status, onWC, onClean, onCheck }) {
             {s.lastWCAt && <span className="text-[7px]">Tual.: {laikasFormatu(s.lastWCAt)}</span>}
             {s.lastCleanAt && <span className="text-[7px]">Val.: {laikasFormatu(s.lastCleanAt)}</span>}
             <div className="flex gap-1 mt-auto">
-              <Button size="icon" className="w-5 h-5" variant={s.needsWC?'destructive':'outline'} onClick={e=>{e.stopPropagation(); onWC(lova);}}>
+              <Button
+                size="icon"
+                className="w-5 h-5"
+                variant={s.needsWC ? 'warning' : 'outline'}
+                onClick={e => {
+                  e.stopPropagation();
+                  onWC(lova);
+                }}
+              >
                 <Toilet size={12}/>
               </Button>
-              <Button size="icon" className="w-5 h-5" variant={s.needsCleaning?'destructive':'outline'} onClick={e=>{e.stopPropagation(); onClean(lova);}}>
+              <Button
+                size="icon"
+                className="w-5 h-5"
+                variant={s.needsCleaning ? 'warning' : 'outline'}
+                onClick={e => {
+                  e.stopPropagation();
+                  onClean(lova);
+                }}
+              >
                 <Brush size={12}/>
               </Button>
-              <Button size="icon" className="w-5 h-5" variant="outline" onClick={e=>{e.stopPropagation(); onCheck(lova);}}>
+              <Button
+                size="icon"
+                className="w-5 h-5"
+                variant={pradelsta ? 'warning' : 'success'}
+                onClick={e => {
+                  e.stopPropagation();
+                  onCheck(lova);
+                }}
+              >
                 <Check size={12}/>
               </Button>
             </div>
@@ -85,7 +109,7 @@ export default function ZoneSection({
         />
         <Button
           size="icon"
-          variant="outline"
+          variant="success"
           onClick={checkAll}
           aria-label="Patikrinti visus"
           className="flex-shrink-0"
