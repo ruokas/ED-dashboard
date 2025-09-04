@@ -55,7 +55,6 @@ function LovosKortele({ lova, index, status, onWC, onClean, onCheck }) {
           <CardFooter className="p-1 flex gap-2 justify-center">
             <Button
               size="icon"
-              className="w-8 h-8"
               variant={s.needsWC ? 'warning' : 'outline'}
               aria-label="Mark toilet needed"
               onClick={e => {
@@ -63,11 +62,10 @@ function LovosKortele({ lova, index, status, onWC, onClean, onCheck }) {
                 onWC(lova);
               }}
             >
-              <Toilet size={16}/>
+              <Toilet size={24}/>
             </Button>
             <Button
               size="icon"
-              className="w-8 h-8"
               variant={s.needsCleaning ? 'warning' : 'outline'}
               aria-label="Mark cleaned"
               onClick={e => {
@@ -75,11 +73,10 @@ function LovosKortele({ lova, index, status, onWC, onClean, onCheck }) {
                 onClean(lova);
               }}
             >
-              <Brush size={16}/>
+              <Brush size={24}/>
             </Button>
             <Button
               size="icon"
-              className="w-8 h-8"
               variant={pradelsta ? 'warning' : 'success'}
               aria-label="Mark checked"
               onClick={e => {
@@ -87,7 +84,7 @@ function LovosKortele({ lova, index, status, onWC, onClean, onCheck }) {
                 onCheck(lova);
               }}
             >
-              <Check size={16}/>
+              <Check size={24}/>
             </Button>
           </CardFooter>
         </Card>
@@ -120,7 +117,7 @@ export default function ZoneSection({
           aria-label={expanded ? 'Collapse zone' : 'Expand zone'}
           className="flex-shrink-0"
         >
-          {expanded ? <ChevronDown size={14}/> : <ChevronRight size={14}/>}
+          {expanded ? <ChevronDown size={24}/> : <ChevronRight size={24}/>}
         </Button>
         <h2 className="font-semibold text-xs flex-1 min-w-0 text-left truncate">{zona}</h2>
         <input
@@ -136,7 +133,7 @@ export default function ZoneSection({
           aria-label="Patikrinti visus"
           className="flex-shrink-0"
         >
-          <Check size={14}/>
+          <Check size={24}/>
         </Button>
       </div>
       {expanded && (

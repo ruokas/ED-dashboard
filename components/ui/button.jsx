@@ -28,7 +28,8 @@ export const Button = React.forwardRef(
     const sizes = {
       sm: 'px-2 py-1 text-xs',
       md: 'px-3 py-2 text-sm',
-      icon: 'p-1 w-6 h-6 flex items-center justify-center',
+      icon: 'w-11 h-11 flex items-center justify-center',
+      touch: 'h-11 min-w-[2.75rem] px-3 text-sm flex items-center justify-center',
     };
 
     return (
