@@ -5,7 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Toilet, Brush, Check } from 'lucide-react';
 import Pranesimas from './Pranesimas.jsx';
-import safeParse from './safeParse.jsx';
+import useLocalStorageState from './hooks/useLocalStorageState.js';
 
 // ---------------- Konfigūracija -----------------
 const ZONOS = {
@@ -94,29 +94,25 @@ function LovosKortele({ lova, index, status, onWC, onClean, onCheck }) {
 
 // ------------- Pagrindinis Komponentas ------------
 export default function LovuValdymoPrograma() {
-  const [statusMap,setStatusMap]=useState(()=>
-    safeParse('lovuBusena',Object.fromEntries(VISOS_LOVOS.map(b=>[b,{...NUMATYTA_BUSENA}])))
+  const [statusMap,setStatusMap]=useLocalStorageState(
+    'lovuBusena',
+    Object.fromEntries(VISOS_LOVOS.map(b=>[b,{...NUMATYTA_BUSENA}]))
   );
-  const [zonosLovos,setZonosLovos]=useState(()=>
-    safeParse('zonosLovos',ZONOS)
-  );
-  const [zonuPadejejas,setZonuPadejejas]=useState(()=>
-    safeParse('zonuPadejejas',Object.fromEntries(Object.keys(ZONOS).map(z=>[z,''])))
+  const [zonosLovos,setZonosLovos]=useLocalStorageState('zonosLovos',ZONOS);
+  const [zonuPadejejas,setZonuPadejejas]=useLocalStorageState(
+    'zonuPadejejas',
+    Object.fromEntries(Object.keys(ZONOS).map(z=>[z,'']))
   );
   const [filtras,setFiltras]=useState(FiltravimoRezimai.VISI);
   const [,tick]=useState(0);
   const [snack,setSnack]=useState(null);
   const [skirtukas,setSkirtukas]=useState('lovos');
-  const [zurnalas,setZurnalas]=useState(()=>safeParse('lovuZurnalas',[]));
+  const [zurnalas,setZurnalas]=useLocalStorageState('lovuZurnalas',[]);
   const [paieska,setPaieska]=useState('');
-
-  useEffect(()=>void localStorage.setItem('lovuBusena',JSON.stringify(statusMap)),[statusMap]);
-  useEffect(()=>void localStorage.setItem('zonosLovos',JSON.stringify(zonosLovos)),[zonosLovos]);
-  useEffect(()=>void localStorage.setItem('zonuPadejejas',JSON.stringify(zonuPadejejas)),[zonuPadejejas]);
-  useEffect(()=>void localStorage.setItem('lovuZurnalas',JSON.stringify(zurnalas.slice(-200))),[zurnalas]);
+  
   useEffect(()=>{const id=setInterval(()=>tick(x=>x+1),1000);return()=>clearInterval(id)},[]);
 
-  const pushZurnalas=tekst=>setZurnalas(l=>[...l,{ts:dabar(),vartotojas:'Anon',tekstas:tekst}]);
+  const pushZurnalas=tekst=>setZurnalas(l=>[...l,{ts:dabar(),vartotojas:'Anon',tekstas:tekst}].slice(-200));
   const applyFilter=lov=>{
     const s=statusMap[lov]||NUMATYTA_BUSENA;
     if(filtras===FiltravimoRezimai.TUALETAS) return s.needsWC;
