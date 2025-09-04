@@ -54,7 +54,7 @@ function LovosKortele({ lova, index, status, onWC, onClean, onCheck }) {
           </CardContent>
           <CardFooter className="p-1 flex gap-2 justify-center">
             <Button
-              size="icon"
+              size="icon-sm"
               variant={s.needsWC ? 'warning' : 'outline'}
               aria-label="Mark toilet needed"
               onClick={e => {
@@ -62,10 +62,10 @@ function LovosKortele({ lova, index, status, onWC, onClean, onCheck }) {
                 onWC(lova);
               }}
             >
-              <Toilet size={24}/>
+              <Toilet size={20}/>
             </Button>
             <Button
-              size="icon"
+              size="icon-sm"
               variant={s.needsCleaning ? 'warning' : 'outline'}
               aria-label="Mark cleaned"
               onClick={e => {
@@ -73,10 +73,10 @@ function LovosKortele({ lova, index, status, onWC, onClean, onCheck }) {
                 onClean(lova);
               }}
             >
-              <Brush size={24}/>
+              <Brush size={20}/>
             </Button>
             <Button
-              size="icon"
+              size="icon-sm"
               variant={pradelsta ? 'warning' : 'success'}
               aria-label="Mark checked"
               onClick={e => {
@@ -84,7 +84,7 @@ function LovosKortele({ lova, index, status, onWC, onClean, onCheck }) {
                 onCheck(lova);
               }}
             >
-              <Check size={24}/>
+              <Check size={20}/>
             </Button>
           </CardFooter>
         </Card>
