@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, cleanup, fireEvent } from '@testing-library/react';
+import { render, screen, cleanup, fireEvent, within } from '@testing-library/react';
 import { DragDropContext } from 'react-beautiful-dnd';
 import ZoneSection from '../components/ZoneSection.jsx';
 
@@ -11,7 +11,7 @@ jest.mock(
   { virtual: true }
 );
 
-const renderZone = () =>
+const renderZone = (props = {}) =>
   render(
     <DragDropContext onDragEnd={() => {}}>
       <ZoneSection
@@ -22,9 +22,11 @@ const renderZone = () =>
         onWC={() => {}}
         onClean={() => {}}
         onCheck={() => {}}
+        onReset={() => {}}
         padejejas=""
         onPadejejasChange={() => {}}
         checkAll={() => {}}
+        {...props}
       />
     </DragDropContext>
   );
@@ -44,6 +46,19 @@ describe('ZoneSection responsiveness', () => {
     renderZone();
     const card = screen.getByText('1').closest('.bg-red-100');
     expect(card).toHaveClass('w-full', 'min-h-28', 'sm:min-h-32', 'h-auto');
+  });
+});
+
+describe('ZoneSection reset button', () => {
+  afterEach(() => cleanup());
+
+  test('invokes onReset when clicked', () => {
+    const onReset = jest.fn();
+    renderZone({ onReset });
+    const card = screen.getByText('1').parentElement.parentElement;
+    const resetBtn = within(card).getAllByRole('button')[3];
+    fireEvent.click(resetBtn);
+    expect(onReset).toHaveBeenCalledWith('1');
   });
 });
 
