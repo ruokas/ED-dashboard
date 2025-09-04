@@ -35,7 +35,7 @@ function LovosKortele({ lova, index, status, onWC, onClean, onCheck }) {
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          className={`flex flex-col p-2 w-full h-28 sm:h-32 hover:scale-105 transition-transform ${rysys}`}
+          className={`flex flex-col p-2 w-full min-h-28 sm:min-h-32 h-auto hover:scale-105 transition-transform ${rysys}`}
           title={s.lastBy ? `${s.lastBy} • ${new Date(s.lastAt).toLocaleTimeString()}` : ''}
         >
           <CardHeader className="p-1 flex justify-center">
