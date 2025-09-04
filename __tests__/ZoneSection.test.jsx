@@ -35,14 +35,14 @@ describe('ZoneSection responsiveness', () => {
   test('uses base size classes on small screens', () => {
     window.innerWidth = 500;
     renderZone();
-    const card = screen.getByText('1').closest('.bg-gray-200');
+    const card = screen.getByText('1').closest('.bg-red-100');
     expect(card).toHaveClass('w-full', 'h-24');
   });
 
   test('includes larger size classes for sm breakpoint', () => {
     window.innerWidth = 700;
     renderZone();
-    const card = screen.getByText('1').closest('.bg-gray-200');
+    const card = screen.getByText('1').closest('.bg-red-100');
     expect(card).toHaveClass('w-full', 'sm:h-28');
   });
 });
