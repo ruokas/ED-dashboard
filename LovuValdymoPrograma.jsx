@@ -15,12 +15,9 @@ import { filterLogEntries } from '@/src/utils/logFilter.js';
 
 // ---------------- Konfigūracija -----------------
 const ZONOS = {
-  'IT Zona': ['IT1', 'IT2'],
-  'Zona 1': ['1','2','3','P1','P2','P3'],
-  'Zona 2': ['4','5','6','P4','P5','P6','S4','S5','S6'],
-  'Zona 3': ['7','8','9','P7','P8','P9','S7','S8','S9'],
-  'Zona 4': ['10','11','12','P10','P11','P12','S10','S11','S12'],
-  'Zona 5': ['13','14','15','16','17','121A','121B','IZO']
+  'A zona': ['1','2','3','4','5','6','7','8'],
+  'B zona': ['9','10','11','12','13','14','15','16'],
+  'IT zona': ['IT1','IT2','IT3','IT4']
 };
 const VISOS_LOVOS = Object.values(ZONOS).flat();
 
