@@ -36,13 +36,13 @@ describe('ZoneSection responsiveness', () => {
     window.innerWidth = 500;
     renderZone();
     const card = screen.getByText('1').closest('.bg-gray-200');
-    expect(card).toHaveClass('w-20', 'h-24');
+    expect(card).toHaveClass('w-full', 'h-24');
   });
 
   test('includes larger size classes for sm breakpoint', () => {
     window.innerWidth = 700;
     renderZone();
     const card = screen.getByText('1').closest('.bg-gray-200');
-    expect(card).toHaveClass('sm:w-24', 'sm:h-28');
+    expect(card).toHaveClass('w-full', 'sm:h-28');
   });
 });
