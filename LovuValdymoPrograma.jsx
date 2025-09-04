@@ -6,6 +6,7 @@ import useLocalStorageState from './hooks/useLocalStorageState.js';
 import Filters from './components/Filters.jsx';
 import Tabs from './components/Tabs.jsx';
 import ZoneSection from './components/ZoneSection.jsx';
+import { NUMATYTA_BUSENA, dabar } from '@/src/utils/bedState.js';
 
 // ---------------- Konfigūracija -----------------
 const ZONOS = {
@@ -21,17 +22,6 @@ const VISOS_LOVOS = Object.values(ZONOS).flat();
 // ------------- Tipai --------------------
 const FiltravimoRezimai = { VISI: 'VISI', TUALETAS: 'TUALETAS', VALYMAS: 'VALYMAS', UZDELTAS: 'UZDELTAS' };
 
-const NUMATYTA_BUSENA = {
-  needsWC: false,
-  needsCleaning: false,
-  flaggedAt: null,
-  lastBy: null,
-  lastAt: null,
-  lastCheckedAt: null,
-  lastWCAt: null,
-  lastCleanAt: null,
-};
-const dabar = () => Date.now();
 
 // ------------- Pagrindinis Komponentas ------------
 export default function LovuValdymoPrograma() {
