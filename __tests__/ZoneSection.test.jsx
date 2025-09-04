@@ -32,10 +32,17 @@ const renderZone = () =>
 describe('ZoneSection responsiveness', () => {
   afterEach(() => cleanup());
 
-  test('applies responsive sizing utilities', () => {
+  test('uses base size classes on small screens', () => {
+    window.innerWidth = 500;
     renderZone();
     const card = screen.getByText('1').closest('.bg-gray-200');
-    expect(card).toHaveClass('w-full', 'max-w-[6rem]', 'aspect-[3/4]');
-    expect(card).not.toHaveClass('h-24', 'sm:h-28');
+    expect(card).toHaveClass('w-full', 'h-24');
+  });
+
+  test('includes larger size classes for sm breakpoint', () => {
+    window.innerWidth = 700;
+    renderZone();
+    const card = screen.getByText('1').closest('.bg-gray-200');
+    expect(card).toHaveClass('w-full', 'sm:h-28');
   });
 });
