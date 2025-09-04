@@ -42,3 +42,8 @@ Example: click **Dark** to enable the darker palette; click again to return to l
 Accessibility: the toggle button is focusable via keyboard and preserves contrast for better readability.
 
 
+## Legacy Layouts
+
+Older versions stored bed layouts in your browser's local storage. If you previously used a layout with names like "P" or "S" and the dashboard looks incorrect, clear the site's local storage to reset the beds.
+
+
