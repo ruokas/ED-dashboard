@@ -17,7 +17,7 @@ const options = [
 ];
 
 describe('Filters', () => {
-  test.each(options)('%s button sets filter and variant', ({ label, value, activeClass }) => {
+  test.each(options)('$label button sets filter and variant', ({ label, value, activeClass }) => {
     const setFiltras = jest.fn();
     const { rerender } = render(
       <Filters filtras={FiltravimoRezimai.VISI} setFiltras={setFiltras} FiltravimoRezimai={FiltravimoRezimai} />
