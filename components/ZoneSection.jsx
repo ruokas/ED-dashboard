@@ -71,14 +71,20 @@ export default function ZoneSection({
   return (
     <div className="mb-3">
       <div className="flex items-center mb-1 gap-2">
-        <h2 className="font-semibold text-xs w-20 text-left">{zona}</h2>
+        <h2 className="font-semibold text-xs flex-1 min-w-0 text-left truncate">{zona}</h2>
         <input
-          className="border p-1 text-xs rounded w-20"
+          className="border p-1 text-xs rounded flex-1 min-w-0"
           placeholder="Padėjėjas"
           value={padejejas}
           onChange={e => onPadejejasChange(e.target.value)}
         />
-        <Button size="icon" variant="outline" onClick={checkAll} aria-label="Patikrinti visus">
+        <Button
+          size="icon"
+          variant="outline"
+          onClick={checkAll}
+          aria-label="Patikrinti visus"
+          className="flex-shrink-0"
+        >
           <Check size={14}/>
         </Button>
       </div>
