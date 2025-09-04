@@ -1,14 +1,5 @@
-node_modules
-dist
+node_modules/
+.DS_Store
+dist/
+docs/
 assets/
-
-# Ignore built JavaScript bundles
-main.js
-*.js
-
-# Keep built files for GitHub Pages
-!docs/**/*.js
-!postcss.config.js
-!tailwind.config.js
-!src/**/*.js
-
