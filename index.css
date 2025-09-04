@@ -3,9 +3,16 @@
 @tailwind utilities;
 
 /* Global stylesheet */
+/* Theme variables */
+:root {
+  /* default light theme colors */
+  --color-text-primary: #1f2937; /* gray-800 */
+  --color-bg-primary: #f1f5f9; /* gray-100 */
+}
+
 body {
   margin: 0;
   font-family: system-ui, sans-serif;
-  color: #1f2937; /* gray-800 */
-  background-color: #f1f5f9; /* gray-100 */
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-primary);
 }
