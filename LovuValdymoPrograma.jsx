@@ -63,39 +63,41 @@ export default function LovuValdymoPrograma() {
   const exportCsv=()=>{const hd='laikas,vartotojas,tekstas';const rows=filteredLog.map(e=>[new Date(e.ts).toISOString(),e.vartotojas,`"${e.tekstas.replace(/"/g,'""')}"`].join(','));const csv=[hd,...rows].join('\n');const blob=new Blob([csv],{type:'text/csv'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`lovu_zurnalas_${new Date().toISOString()}.csv`;a.click();URL.revokeObjectURL(url);};
 
   return(
-    <div className="p-2 bg-gray-100 min-h-screen">
-      <Filters filtras={filtras} setFiltras={setFiltras} FiltravimoRezimai={FiltravimoRezimai}/>
-      <Tabs skirtukas={skirtukas} setSkirtukas={setSkirtukas}/>
-      {skirtukas==='lovos'?(
-        <DragDropContext onDragEnd={onDragEnd}>
-          {Object.entries(zonosLovos).map(([zona,lovos])=> (
-            <ZoneSection
-              key={zona}
-              zona={zona}
-              lovos={lovos}
-              statusMap={statusMap}
-              applyFilter={applyFilter}
-              onWC={toggleWC}
-              onClean={toggleCleaning}
-              onCheck={markChecked}
-              padejejas={zonuPadejejas[zona]}
-              onPadejejasChange={user=>handleZone(zona,user)}
-              checkAll={()=>checkAll(zona)}
-            />
-          ))}
-        </DragDropContext>
-      ):(
-        <div>
-          <div className="flex items-center gap-2 mb-1">
-            <input className="border p-1 rounded text-xs flex-1" placeholder="Ieškoti žurnale" value={paieska} onChange={e=>setPaieska(e.target.value)}/>
-            <Button size="sm" onClick={exportCsv}>Eksportuoti CSV</Button>
+    <div className="mx-auto max-w-screen-xl">
+      <div className="p-2 bg-gray-100 min-h-screen">
+        <Filters filtras={filtras} setFiltras={setFiltras} FiltravimoRezimai={FiltravimoRezimai}/>
+        <Tabs skirtukas={skirtukas} setSkirtukas={setSkirtukas}/>
+        {skirtukas==='lovos'?(
+          <DragDropContext onDragEnd={onDragEnd}>
+            {Object.entries(zonosLovos).map(([zona,lovos])=> (
+              <ZoneSection
+                key={zona}
+                zona={zona}
+                lovos={lovos}
+                statusMap={statusMap}
+                applyFilter={applyFilter}
+                onWC={toggleWC}
+                onClean={toggleCleaning}
+                onCheck={markChecked}
+                padejejas={zonuPadejejas[zona]}
+                onPadejejasChange={user=>handleZone(zona,user)}
+                checkAll={()=>checkAll(zona)}
+              />
+            ))}
+          </DragDropContext>
+        ):(
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <input className="border p-1 rounded text-xs flex-1" placeholder="Ieškoti žurnale" value={paieska} onChange={e=>setPaieska(e.target.value)}/>
+              <Button size="sm" onClick={exportCsv}>Eksportuoti CSV</Button>
+            </div>
+            <ul className="text-xs space-y-1 max-h-[70vh] overflow-auto">
+              {filteredLog.map((e,i)=><li key={i} className="py-0.5">{e.vartotojas}[{new Date(e.ts).toLocaleTimeString()}]: {e.tekstas}</li>)}
+            </ul>
           </div>
-          <ul className="text-xs space-y-1 max-h-[70vh] overflow-auto">
-            {filteredLog.map((e,i)=><li key={i} className="py-0.5">{e.vartotojas}[{new Date(e.ts).toLocaleTimeString()}]: {e.tekstas}</li>)}
-          </ul>
-        </div>
-      )}
-      {snack&&<Pranesimas msg={snack.msg} onUndo={undo}/>}
+        )}
+        {snack&&<Pranesimas msg={snack.msg} onUndo={undo}/>}
+      </div>
     </div>
   );
 }
