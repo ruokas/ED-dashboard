@@ -22,33 +22,35 @@ describe('LovuValdymoPrograma', () => {
   test('filters beds by toilet status', () => {
     render(<LovuValdymoPrograma />);
 
-    const bed1Label = screen.getByText(/^1$/);
+    const zone = screen.getByText('Zona 1').parentElement.parentElement;
+    const bed1Label = within(zone).getByText(/^1$/);
     const card = bed1Label.parentElement.parentElement;
     const wcButton = within(card).getAllByRole('button')[0];
     fireEvent.click(wcButton);
 
     fireEvent.click(screen.getByText('Tualetas'));
 
-    expect(screen.getByText(/^1$/)).toBeInTheDocument();
-    expect(screen.queryByText(/^2$/)).not.toBeInTheDocument();
+    expect(within(zone).getByText(/^1$/)).toBeInTheDocument();
+    expect(within(zone).queryByText(/^2$/)).not.toBeInTheDocument();
   });
 
   test('undo reverses status change', () => {
     render(<LovuValdymoPrograma />);
 
-    const bed1Label = screen.getByText(/^1$/);
+    const zone = screen.getByText('Zona 1').parentElement.parentElement;
+    const bed1Label = within(zone).getByText(/^1$/);
     const card = bed1Label.parentElement.parentElement;
     const wcButton = within(card).getAllByRole('button')[0];
     fireEvent.click(wcButton);
 
     fireEvent.click(screen.getByText('Tualetas'));
-    expect(screen.getByText(/^1$/)).toBeInTheDocument();
+    expect(within(zone).getByText(/^1$/)).toBeInTheDocument();
 
     const msg = screen.getByText('1: Tualetas');
     const undoBtn = within(msg).getByRole('button');
     fireEvent.click(undoBtn);
 
-    expect(screen.queryByText(/^1$/)).not.toBeInTheDocument();
+    expect(within(zone).queryByText(/^1$/)).not.toBeInTheDocument();
   });
 
   test('zone helper update marks beds checked', () => {
@@ -60,7 +62,8 @@ describe('LovuValdymoPrograma', () => {
 
     expect(input.value).toBe('Jonas');
 
-    const bed1Label = screen.getByText(/^1$/);
+    const zone = screen.getByText('Zona 1').parentElement.parentElement;
+    const bed1Label = within(zone).getByText(/^1$/);
     const card = bed1Label.parentElement.parentElement;
     expect(within(card).getByText(/Patikrinta/)).toBeInTheDocument();
   });
@@ -88,7 +91,8 @@ describe('LovuValdymoPrograma', () => {
   test('reset button clears bed status', () => {
     render(<LovuValdymoPrograma />);
 
-    const bed1Label = screen.getByText(/^1$/);
+    const zone = screen.getByText('Zona 1').parentElement.parentElement;
+    const bed1Label = within(zone).getByText(/^1$/);
     const card = bed1Label.parentElement.parentElement;
     const buttons = within(card).getAllByRole('button');
     const wcButton = buttons[0];
@@ -98,6 +102,6 @@ describe('LovuValdymoPrograma', () => {
     fireEvent.click(resetButton);
     fireEvent.click(screen.getByText('Tualetas'));
 
-    expect(screen.queryByText(/^1$/)).not.toBeInTheDocument();
+    expect(within(zone).queryByText(/^1$/)).not.toBeInTheDocument();
   });
 });
