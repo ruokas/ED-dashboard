@@ -52,39 +52,42 @@ function LovosKortele({ lova, index, status, onWC, onClean, onCheck }) {
               <span className="text-xs">Val.: {laikasFormatu(s.lastCleanAt)}</span>
             )}
           </CardContent>
-          <CardFooter className="p-1 flex gap-1 justify-center">
+          <CardFooter className="p-1 flex gap-2 justify-center">
             <Button
               size="icon"
-              className="w-5 h-5"
+              className="w-8 h-8"
               variant={s.needsWC ? 'warning' : 'outline'}
+              aria-label="Mark toilet needed"
               onClick={e => {
                 e.stopPropagation();
                 onWC(lova);
               }}
             >
-              <Toilet size={12}/>
+              <Toilet size={16}/>
             </Button>
             <Button
               size="icon"
-              className="w-5 h-5"
+              className="w-8 h-8"
               variant={s.needsCleaning ? 'warning' : 'outline'}
+              aria-label="Mark cleaned"
               onClick={e => {
                 e.stopPropagation();
                 onClean(lova);
               }}
             >
-              <Brush size={12}/>
+              <Brush size={16}/>
             </Button>
             <Button
               size="icon"
-              className="w-5 h-5"
+              className="w-8 h-8"
               variant={pradelsta ? 'warning' : 'success'}
+              aria-label="Mark checked"
               onClick={e => {
                 e.stopPropagation();
                 onCheck(lova);
               }}
             >
-              <Check size={12}/>
+              <Check size={16}/>
             </Button>
           </CardFooter>
         </Card>
