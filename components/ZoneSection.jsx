@@ -142,7 +142,7 @@ export default function ZoneSection({
       {expanded && (
         <Droppable droppableId={zona}>
           {provided => (
-            <div ref={provided.innerRef} {...provided.droppableProps} className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+            <div ref={provided.innerRef} {...provided.droppableProps} className="grid grid-cols-[repeat(auto-fit,minmax(8rem,1fr))] gap-2">
               {lovos.filter(applyFilter).map((l, i) => (
                 <LovosKortele
                   key={l}
