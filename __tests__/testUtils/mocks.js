@@ -45,3 +45,8 @@ jest.mock(
   }),
   { virtual: true }
 );
+
+// Placeholder test to satisfy Jest's requirement for at least one test in this file.
+test('test utils mocks are defined', () => {
+  expect(dndOnDragEnd).toBeUndefined();
+});

@@ -14,7 +14,6 @@ function LovosKortele({ lova, index, status, onWC, onClean, onCheck }) {
     delta: 50,
   });
   const pradelsta = s.lastCheckedAt ? (dabar() - s.lastCheckedAt) > 30*60*1000 : true;
-  const fonas = '#E2E8F0';
   const rysys = lova.startsWith('IT')
     ? 'border-2 border-blue-400'
     : pradelsta
@@ -31,8 +30,7 @@ function LovosKortele({ lova, index, status, onWC, onClean, onCheck }) {
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          className={`m-1 p-1 w-[80px] h-[105px] ${rysys}`}
-          style={{ backgroundColor: fonas }}
+          className={`m-1 p-1 w-20 h-24 sm:w-24 sm:h-28 bg-gray-200 ${rysys}`}
           title={s.lastBy ? `${s.lastBy} • ${new Date(s.lastAt).toLocaleTimeString()}` : ''}
         >
           <CardContent className="p-1 flex flex-col items-center h-full space-y-0.5">
