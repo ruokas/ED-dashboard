@@ -8,6 +8,7 @@ import Filters from './components/Filters.jsx';
 import Tabs from './components/Tabs.jsx';
 import ZoneSection from './components/ZoneSection.jsx';
 import Header from './components/Header.jsx';
+import StatusSummary from './components/StatusSummary.jsx';
 import { NUMATYTA_BUSENA, dabar, isOverdue, resetBedStatus } from '@/src/utils/bedState.js';
 import { exportLogToCsv } from '@/src/utils/exportCsv.js';
 import { filterLogEntries } from '@/src/utils/logFilter.js';
@@ -75,7 +76,8 @@ export default function LovuValdymoPrograma() {
       <main className="max-w-screen-xl mx-auto p-2">
         <Filters filtras={filtras} setFiltras={setFiltras} FiltravimoRezimai={FiltravimoRezimai}/>
         <Tabs skirtukas={skirtukas} setSkirtukas={setSkirtukas}/>
-        {skirtukas==='lovos'?(
+        {skirtukas==='lovos' && <StatusSummary statusMap={statusMap}/>} 
+        {skirtukas==='lovos'?( 
           <DragDropContext onDragEnd={onDragEnd}>
             {Object.entries(zonosLovos).map(([zona,lovos])=> (
               <ZoneSection
