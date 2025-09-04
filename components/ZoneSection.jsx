@@ -3,7 +3,7 @@ import { useSwipeable } from 'react-swipeable';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Toilet, Brush, Check } from 'lucide-react';
+import { Toilet, Brush, Check, ChevronDown, ChevronRight } from 'lucide-react';
 import { NUMATYTA_BUSENA, dabar, laikasFormatu } from '@/src/utils/bedState.js';
 
 function LovosKortele({ lova, index, status, onWC, onClean, onCheck }) {
@@ -97,9 +97,20 @@ export default function ZoneSection({
   onPadejejasChange,
   checkAll,
 }) {
+  const [expanded, setExpanded] = React.useState(true);
+
   return (
     <div className="mb-3">
       <div className="flex items-center mb-1 gap-2">
+        <Button
+          size="icon"
+          variant="outline"
+          onClick={() => setExpanded(e => !e)}
+          aria-label={expanded ? 'Collapse zone' : 'Expand zone'}
+          className="flex-shrink-0"
+        >
+          {expanded ? <ChevronDown size={14}/> : <ChevronRight size={14}/>}
+        </Button>
         <h2 className="font-semibold text-xs flex-1 min-w-0 text-left truncate">{zona}</h2>
         <input
           className="border p-1 text-xs rounded flex-1 min-w-0 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
@@ -117,24 +128,26 @@ export default function ZoneSection({
           <Check size={14}/>
         </Button>
       </div>
-      <Droppable droppableId={zona}>
-        {provided => (
-          <div ref={provided.innerRef} {...provided.droppableProps} className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
-            {lovos.filter(applyFilter).map((l, i) => (
-              <LovosKortele
-                key={l}
-                index={i}
-                lova={l}
-                status={statusMap[l]}
-                onWC={onWC}
-                onClean={onClean}
-                onCheck={onCheck}
-              />
-            ))}
-            {provided.placeholder}
-          </div>
-        )}
-      </Droppable>
+      {expanded && (
+        <Droppable droppableId={zona}>
+          {provided => (
+            <div ref={provided.innerRef} {...provided.droppableProps} className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+              {lovos.filter(applyFilter).map((l, i) => (
+                <LovosKortele
+                  key={l}
+                  index={i}
+                  lova={l}
+                  status={statusMap[l]}
+                  onWC={onWC}
+                  onClean={onClean}
+                  onCheck={onCheck}
+                />
+              ))}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      )}
     </div>
   );
 }
