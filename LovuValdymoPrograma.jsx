@@ -6,7 +6,7 @@ import useLocalStorageState from './hooks/useLocalStorageState.js';
 import Filters from './components/Filters.jsx';
 import Tabs from './components/Tabs.jsx';
 import ZoneSection from './components/ZoneSection.jsx';
-import { NUMATYTA_BUSENA, dabar } from '@/src/utils/bedState.js';
+import { NUMATYTA_BUSENA, dabar, isOverdue } from '@/src/utils/bedState.js';
 
 // ---------------- Konfigūracija -----------------
 const ZONOS = {
@@ -51,7 +51,7 @@ export default function LovuValdymoPrograma() {
     const s=statusMap[lov]||NUMATYTA_BUSENA;
     if(filtras===FiltravimoRezimai.TUALETAS) return s.needsWC;
     if(filtras===FiltravimoRezimai.VALYMAS) return s.needsCleaning;
-    if(filtras===FiltravimoRezimai.UZDELTAS) return !s.lastCheckedAt || (dabar()-s.lastCheckedAt)>30*60*1000;
+    if(filtras===FiltravimoRezimai.UZDELTAS) return isOverdue(s.lastCheckedAt);
     return true;
   };
   const updateLova=(lova,fn,msg)=>{setStatusMap(prev=>{const old=prev[lova]||NUMATYTA_BUSENA;const next={...fn(old),lastBy:'Anon',lastAt:dabar()};setSnack({bed:lova,prev:old,msg});return{...prev,[lova]:next};});pushZurnalas(msg);};

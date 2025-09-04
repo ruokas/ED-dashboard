@@ -4,7 +4,7 @@ import { Droppable, Draggable } from 'react-beautiful-dnd';
 import { Card, CardHeader, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Toilet, Brush, Check, ChevronDown, ChevronRight } from 'lucide-react';
-import { NUMATYTA_BUSENA, dabar, laikasFormatu } from '@/src/utils/bedState.js';
+import { NUMATYTA_BUSENA, laikasFormatu, isOverdue } from '@/src/utils/bedState.js';
 
 function LovosKortele({ lova, index, status, onWC, onClean, onCheck }) {
   const s = status || NUMATYTA_BUSENA;
@@ -13,7 +13,7 @@ function LovosKortele({ lova, index, status, onWC, onClean, onCheck }) {
     onSwipedRight: () => onClean(lova),
     delta: 50,
   });
-  const pradelsta = s.lastCheckedAt ? (dabar() - s.lastCheckedAt) > 30*60*1000 : true;
+  const pradelsta = isOverdue(s.lastCheckedAt);
   // Color legend:
   // - Blue: IT beds
   // - Red: overdue check
