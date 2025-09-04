@@ -7,6 +7,7 @@ main.js
 
 # Keep built files for GitHub Pages
 !docs/**/*.js
+!assets/**/*.js
 !postcss.config.js
 !tailwind.config.js
 
