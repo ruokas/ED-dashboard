@@ -9,6 +9,7 @@ import Tabs from './components/Tabs.jsx';
 import ZoneSection from './components/ZoneSection.jsx';
 import { NUMATYTA_BUSENA, dabar, isOverdue, resetBedStatus } from '@/src/utils/bedState.js';
 import { exportLogToCsv } from '@/src/utils/exportCsv.js';
+import { filterLogEntries } from '@/src/utils/logFilter.js';
 
 // ---------------- Konfigūracija -----------------
 const ZONOS = {
@@ -65,7 +66,7 @@ export default function LovuValdymoPrograma() {
   const undo=()=>{if(!snack)return;setStatusMap(p=>({...p,[snack.bed]:snack.prev}));setSnack(null);pushZurnalas(`Anuliuota ${snack.bed}`);};
   const handleZone=(z,user)=>{setZonuPadejejas(prev=>{const next={...prev,[z]:user};pushZurnalas(`Padėjėjas ${user||'nėra'} ${z}`);return next;});const lovos=zonosLovos[z]||[];setStatusMap(prev=>{const upd={...prev};lovos.forEach(l=>{upd[l]={...upd[l],lastCheckedAt:dabar()}});return upd});};
   const onDragEnd=res=>{if(!res.destination)return;const {source,destination,draggableId}=res;setZonosLovos(prev=>{const result={...prev};const src=Array.from(result[source.droppableId]);const [moved]=src.splice(source.index,1);if(source.droppableId===destination.droppableId){src.splice(destination.index,0,moved);result[source.droppableId]=src;}else{const dest=Array.from(result[destination.droppableId]);dest.splice(destination.index,0,moved);result[source.droppableId]=src;result[destination.droppableId]=dest;}return result;});pushZurnalas(`Perkelta ${draggableId} į ${destination.droppableId}`);};
-  const filteredLog=zurnalas.slice().reverse().filter(e=>e.tekstas.toLowerCase().includes(paieska.toLowerCase()));
+  const filteredLog = filterLogEntries(zurnalas, paieska);
 
   return(
     <div className="mx-auto max-w-screen-xl">
