@@ -7,6 +7,7 @@ import useInterval from './hooks/useInterval.js';
 import Filters from './components/Filters.jsx';
 import Tabs from './components/Tabs.jsx';
 import ZoneSection from './components/ZoneSection.jsx';
+import Header from './components/Header.jsx';
 import { NUMATYTA_BUSENA, dabar, isOverdue, resetBedStatus } from '@/src/utils/bedState.js';
 import { exportLogToCsv } from '@/src/utils/exportCsv.js';
 import { filterLogEntries } from '@/src/utils/logFilter.js';
@@ -69,9 +70,9 @@ export default function LovuValdymoPrograma() {
   const filteredLog = filterLogEntries(zurnalas, paieska);
 
   return(
-    <div className="mx-auto max-w-screen-xl">
-      <div className="p-2 bg-gray-100 dark:bg-gray-900 min-h-screen">
-        <Button size="sm" className="fixed top-2 right-2" onClick={()=>setDark(d=>!d)}>{dark? 'Light':'Dark'}</Button>
+    <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-900 dark:to-gray-800">
+      <Header dark={dark} toggleDark={() => setDark(d => !d)} />
+      <main className="max-w-screen-xl mx-auto p-2">
         <Filters filtras={filtras} setFiltras={setFiltras} FiltravimoRezimai={FiltravimoRezimai}/>
         <Tabs skirtukas={skirtukas} setSkirtukas={setSkirtukas}/>
         {skirtukas==='lovos'?(
@@ -104,8 +105,8 @@ export default function LovuValdymoPrograma() {
             </ul>
           </div>
         )}
-        {snack&&<Pranesimas msg={snack.msg} onUndo={undo}/>}
-      </div>
+      </main>
+      {snack&&<Pranesimas msg={snack.msg} onUndo={undo}/>}
     </div>
   );
 }
