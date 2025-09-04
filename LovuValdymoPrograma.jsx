@@ -3,6 +3,7 @@ import { DragDropContext } from 'react-beautiful-dnd';
 import { Button } from '@/components/ui/button';
 import Pranesimas from './Pranesimas.jsx';
 import useLocalStorageState from './hooks/useLocalStorageState.js';
+import useInterval from './hooks/useInterval.js';
 import Filters from './components/Filters.jsx';
 import Tabs from './components/Tabs.jsx';
 import ZoneSection from './components/ZoneSection.jsx';
@@ -43,8 +44,8 @@ export default function LovuValdymoPrograma() {
   const [dark,setDark]=useState(false);
 
   useEffect(()=>{document.documentElement.classList.toggle('dark',dark);},[dark]);
-  
-  useEffect(()=>{const id=setInterval(()=>tick(x=>x+1),1000);return()=>clearInterval(id)},[]);
+
+  useInterval(() => tick(x => x + 1), 1000);
 
   const pushZurnalas=tekst=>setZurnalas(l=>[...l,{ts:dabar(),vartotojas:'Anon',tekstas:tekst}].slice(-200));
   const applyFilter=lov=>{
