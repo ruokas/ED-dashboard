@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSwipeable } from 'react-swipeable';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardHeader, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Toilet, Brush, Check, ChevronDown, ChevronRight } from 'lucide-react';
 import { NUMATYTA_BUSENA, dabar, laikasFormatu } from '@/src/utils/bedState.js';
@@ -35,50 +35,58 @@ function LovosKortele({ lova, index, status, onWC, onClean, onCheck }) {
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          className={`p-1 w-full h-24 sm:h-28 ${rysys}`}
+          className={`flex flex-col p-1 w-full h-24 sm:h-28 ${rysys}`}
           title={s.lastBy ? `${s.lastBy} • ${new Date(s.lastAt).toLocaleTimeString()}` : ''}
         >
-          <CardContent className="p-1 flex flex-col items-center h-full space-y-0.5">
+          <CardHeader className="p-1 flex justify-center">
             <span className="font-bold text-xs leading-tight">{lova}</span>
-            {s.lastCheckedAt && <span className="text-[7px]">Patikrinta: {laikasFormatu(s.lastCheckedAt)}</span>}
-            {s.lastWCAt && <span className="text-[7px]">Tual.: {laikasFormatu(s.lastWCAt)}</span>}
-            {s.lastCleanAt && <span className="text-[7px]">Val.: {laikasFormatu(s.lastCleanAt)}</span>}
-            <div className="flex gap-1 mt-auto">
-              <Button
-                size="icon"
-                className="w-5 h-5"
-                variant={s.needsWC ? 'warning' : 'outline'}
-                onClick={e => {
-                  e.stopPropagation();
-                  onWC(lova);
-                }}
-              >
-                <Toilet size={12}/>
-              </Button>
-              <Button
-                size="icon"
-                className="w-5 h-5"
-                variant={s.needsCleaning ? 'warning' : 'outline'}
-                onClick={e => {
-                  e.stopPropagation();
-                  onClean(lova);
-                }}
-              >
-                <Brush size={12}/>
-              </Button>
-              <Button
-                size="icon"
-                className="w-5 h-5"
-                variant={pradelsta ? 'warning' : 'success'}
-                onClick={e => {
-                  e.stopPropagation();
-                  onCheck(lova);
-                }}
-              >
-                <Check size={12}/>
-              </Button>
-            </div>
+          </CardHeader>
+          <CardContent className="p-1 flex flex-col items-center flex-1 space-y-0.5">
+            {s.lastCheckedAt && (
+              <span className="text-[7px]">Patikrinta: {laikasFormatu(s.lastCheckedAt)}</span>
+            )}
+            {s.lastWCAt && (
+              <span className="text-[7px]">Tual.: {laikasFormatu(s.lastWCAt)}</span>
+            )}
+            {s.lastCleanAt && (
+              <span className="text-[7px]">Val.: {laikasFormatu(s.lastCleanAt)}</span>
+            )}
           </CardContent>
+          <CardFooter className="p-1 flex gap-1 justify-center">
+            <Button
+              size="icon"
+              className="w-5 h-5"
+              variant={s.needsWC ? 'warning' : 'outline'}
+              onClick={e => {
+                e.stopPropagation();
+                onWC(lova);
+              }}
+            >
+              <Toilet size={12}/>
+            </Button>
+            <Button
+              size="icon"
+              className="w-5 h-5"
+              variant={s.needsCleaning ? 'warning' : 'outline'}
+              onClick={e => {
+                e.stopPropagation();
+                onClean(lova);
+              }}
+            >
+              <Brush size={12}/>
+            </Button>
+            <Button
+              size="icon"
+              className="w-5 h-5"
+              variant={pradelsta ? 'warning' : 'success'}
+              onClick={e => {
+                e.stopPropagation();
+                onCheck(lova);
+              }}
+            >
+              <Check size={12}/>
+            </Button>
+          </CardFooter>
         </Card>
       )}
     </Draggable>
