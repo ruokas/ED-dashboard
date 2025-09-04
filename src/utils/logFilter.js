@@ -1,5 +1,5 @@
 export function filterLogEntries(log, searchTerm) {
-  const term = searchTerm.toLowerCase();
+  const term = (searchTerm || '').toLowerCase();
   return log
     .slice()
     .reverse()

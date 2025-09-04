@@ -52,4 +52,17 @@ describe('filterLogEntries', () => {
       { tekstas: 'new', vartotojas: 'User2', ts: ts2023 },
     ]);
   });
+
+  test('handles undefined search term without errors', () => {
+    const log = [
+      { tekstas: 'first', vartotojas: 'User1', ts: 1 },
+      { tekstas: 'second', vartotojas: 'User2', ts: 2 },
+    ];
+    expect(() => filterLogEntries(log, undefined)).not.toThrow();
+    const result = filterLogEntries(log, undefined);
+    expect(result).toEqual([
+      { tekstas: 'second', vartotojas: 'User2', ts: 2 },
+      { tekstas: 'first', vartotojas: 'User1', ts: 1 },
+    ]);
+  });
 });
