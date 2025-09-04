@@ -8,7 +8,7 @@ import * as React from 'react';
 export const Card = React.forwardRef(({ className = '', ...props }, ref) => (
   <div
     ref={ref}
-    className={`bg-white dark:bg-gray-800 rounded shadow ${className}`.trim()}
+    className={`bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-shadow border border-gray-200 dark:border-gray-700 ${className}`.trim()}
     {...props}
   />
 ));
@@ -18,7 +18,7 @@ export const CardContent = React.forwardRef(
   ({ className = '', ...props }, ref) => (
     <div
       ref={ref}
-      className={`p-2 text-gray-800 dark:text-gray-100 ${className}`.trim()}
+      className={`p-4 text-gray-800 dark:text-gray-100 ${className}`.trim()}
       {...props}
     />
   )
