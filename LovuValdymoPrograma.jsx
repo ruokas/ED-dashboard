@@ -8,6 +8,7 @@ import Filters from './components/Filters.jsx';
 import Tabs from './components/Tabs.jsx';
 import ZoneSection from './components/ZoneSection.jsx';
 import { NUMATYTA_BUSENA, dabar, isOverdue, resetBedStatus } from '@/src/utils/bedState.js';
+import { exportLogToCsv } from '@/src/utils/exportCsv.js';
 
 // ---------------- Konfigūracija -----------------
 const ZONOS = {
@@ -65,7 +66,6 @@ export default function LovuValdymoPrograma() {
   const handleZone=(z,user)=>{setZonuPadejejas(prev=>{const next={...prev,[z]:user};pushZurnalas(`Padėjėjas ${user||'nėra'} ${z}`);return next;});const lovos=zonosLovos[z]||[];setStatusMap(prev=>{const upd={...prev};lovos.forEach(l=>{upd[l]={...upd[l],lastCheckedAt:dabar()}});return upd});};
   const onDragEnd=res=>{if(!res.destination)return;const {source,destination,draggableId}=res;setZonosLovos(prev=>{const result={...prev};const src=Array.from(result[source.droppableId]);const [moved]=src.splice(source.index,1);if(source.droppableId===destination.droppableId){src.splice(destination.index,0,moved);result[source.droppableId]=src;}else{const dest=Array.from(result[destination.droppableId]);dest.splice(destination.index,0,moved);result[source.droppableId]=src;result[destination.droppableId]=dest;}return result;});pushZurnalas(`Perkelta ${draggableId} į ${destination.droppableId}`);};
   const filteredLog=zurnalas.slice().reverse().filter(e=>e.tekstas.toLowerCase().includes(paieska.toLowerCase()));
-  const exportCsv=()=>{const hd='laikas,vartotojas,tekstas';const rows=filteredLog.map(e=>[new Date(e.ts).toISOString(),e.vartotojas,`"${e.tekstas.replace(/"/g,'""')}"`].join(','));const csv=[hd,...rows].join('\n');const blob=new Blob([csv],{type:'text/csv'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`lovu_zurnalas_${new Date().toISOString()}.csv`;a.click();URL.revokeObjectURL(url);};
 
   return(
     <div className="mx-auto max-w-screen-xl">
@@ -96,7 +96,7 @@ export default function LovuValdymoPrograma() {
           <div>
             <div className="flex items-center gap-2 mb-1">
               <input className="border p-1 rounded text-xs flex-1 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100" placeholder="Ieškoti žurnale" value={paieska} onChange={e=>setPaieska(e.target.value)}/>
-              <Button size="sm" onClick={exportCsv}>Eksportuoti CSV</Button>
+              <Button size="sm" onClick={() => exportLogToCsv(filteredLog)}>Eksportuoti CSV</Button>
             </div>
             <ul className="text-xs space-y-1 max-h-[70vh] overflow-auto">
               {filteredLog.map((e,i)=><li key={i} className="py-0.5">{e.vartotojas}[{new Date(e.ts).toLocaleTimeString()}]: {e.tekstas}</li>)}
