@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from '@/components/ui/card';
-import { Toilet, Brush, Clock } from 'lucide-react';
+import { Toilet, SprayCan, Clock } from 'lucide-react';
 import { isOverdue } from '@/src/utils/bedState.js';
 
 export default function StatusSummary({ statusMap }) {
@@ -16,7 +16,7 @@ export default function StatusSummary({ statusMap }) {
         <span>{wcCount}</span>
       </Card>
       <Card aria-label="needs-cleaning" className="flex items-center justify-center gap-2 p-2 text-sm">
-        <Brush className="text-green-600" />
+        <SprayCan className="text-green-600" />
         <span>{cleaningCount}</span>
       </Card>
       <Card aria-label="overdue" className="flex items-center justify-center gap-2 p-2 text-sm">

@@ -3,7 +3,7 @@ import { useSwipeable } from 'react-swipeable';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import { Card, CardHeader, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Toilet, Brush, Check, ChevronDown, ChevronRight, RotateCcw } from 'lucide-react';
+import { Toilet, SprayCan, Check, ChevronDown, ChevronRight, RotateCcw } from 'lucide-react';
 import { NUMATYTA_BUSENA, laikasFormatu, isOverdue } from '@/src/utils/bedState.js';
 
 function LovosKortele({ lova, index, status, onWC, onClean, onCheck, onReset }) {
@@ -74,7 +74,7 @@ function LovosKortele({ lova, index, status, onWC, onClean, onCheck, onReset }) 
                 onClean(lova);
               }}
             >
-              <Brush size={20}/>
+              <SprayCan size={20}/>
             </Button>
             <Button
               size="icon-sm"
