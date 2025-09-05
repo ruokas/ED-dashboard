@@ -83,7 +83,7 @@ export default function LovuValdymoPrograma() {
   const filteredLog = filterLogEntries(zurnalas, paieska);
 
   return(
-    <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-900 dark:to-gray-800">
+    <div className="min-h-screen bg-gradient-to-br from-slate-200 via-white to-slate-200 dark:from-gray-900 dark:via-gray-950 dark:to-gray-800">
       <Header dark={dark} toggleDark={() => setDark(d => !d)} />
       <main className="max-w-screen-xl mx-auto p-2">
         <Filters filtras={filtras} setFiltras={setFiltras} FiltravimoRezimai={FiltravimoRezimai}/>

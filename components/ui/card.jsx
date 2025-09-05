@@ -8,7 +8,7 @@ import * as React from 'react';
 export const Card = React.forwardRef(({ className = '', ...props }, ref) => (
   <div
     ref={ref}
-    className={`bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-shadow border border-gray-200 dark:border-gray-700 ${className}`.trim()}
+    className={`glass rounded-lg hover:shadow-xl transition-shadow ${className}`.trim()}
     {...props}
   />
 ));
@@ -18,7 +18,7 @@ export const CardHeader = React.forwardRef(
   ({ className = '', ...props }, ref) => (
     <div
       ref={ref}
-      className={`p-4 border-b border-gray-200 dark:border-gray-700 ${className}`.trim()}
+      className={`p-4 border-b border-white/20 dark:border-gray-700/40 ${className}`.trim()}
       {...props}
     />
   )
@@ -40,7 +40,7 @@ export const CardFooter = React.forwardRef(
   ({ className = '', ...props }, ref) => (
     <div
       ref={ref}
-      className={`p-4 border-t border-gray-200 dark:border-gray-700 ${className}`.trim()}
+      className={`p-4 border-t border-white/20 dark:border-gray-700/40 ${className}`.trim()}
       {...props}
     />
   )
