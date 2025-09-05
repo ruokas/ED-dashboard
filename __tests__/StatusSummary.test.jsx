@@ -12,6 +12,15 @@ describe('StatusSummary', () => {
     rerender(
       <StatusSummary
         statusMap={{
+          A: { needsWC: false, needsCleaning: false, lastCheckedAt: null },
+        }}
+      />
+    );
+    expect(screen.getByLabelText('overdue')).toHaveTextContent('0');
+
+    rerender(
+      <StatusSummary
+        statusMap={{
           A: { needsWC: true, needsCleaning: true, lastCheckedAt: 0 },
         }}
       />

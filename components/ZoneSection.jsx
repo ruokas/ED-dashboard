@@ -13,6 +13,7 @@ function LovosKortele({ lova, index, status, onWC, onClean, onCheck, onReset }) 
     onSwipedRight: () => onClean(lova),
     delta: 50,
   });
+  // Beds are overdue only when lastCheckedAt exists and exceeds the limit
   const pradelsta = isOverdue(s.lastCheckedAt);
   // Color legend:
   // - Blue: IT beds
