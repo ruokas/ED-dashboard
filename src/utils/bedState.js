@@ -21,6 +21,6 @@ export const laikasFormatu = t => {
 };
 
 export const isOverdue = (lastCheckedAt, limitMs = 30 * 60 * 1000) => {
-  return !lastCheckedAt || (dabar() - lastCheckedAt) > limitMs;
+  return lastCheckedAt != null && (dabar() - lastCheckedAt) > limitMs;
 };
 export default { NUMATYTA_BUSENA, dabar, laikasFormatu, isOverdue, resetBedStatus };

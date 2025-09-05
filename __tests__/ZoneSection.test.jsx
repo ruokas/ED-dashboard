@@ -37,14 +37,14 @@ describe('ZoneSection responsiveness', () => {
   test('uses base size classes on small screens', () => {
     window.innerWidth = 500;
     renderZone();
-    const card = screen.getByText('1').closest('.bg-red-100');
+    const card = screen.getByText('1').closest('.bg-gray-200');
     expect(card).toHaveClass('w-full', 'min-h-24', 'h-auto');
   });
 
   test('includes larger size classes for sm breakpoint', () => {
     window.innerWidth = 700;
     renderZone();
-    const card = screen.getByText('1').closest('.bg-red-100');
+    const card = screen.getByText('1').closest('.bg-gray-200');
     expect(card).toHaveClass('w-full', 'min-h-24', 'sm:min-h-28', 'h-auto');
   });
 });
@@ -72,6 +72,22 @@ describe('ZoneSection collapse toggle', () => {
     expect(queryByText('1')).not.toBeInTheDocument();
     fireEvent.click(screen.getByLabelText('Expand zone'));
     expect(queryByText('1')).toBeInTheDocument();
+  });
+});
+
+describe('ZoneSection overdue animation', () => {
+  afterEach(() => cleanup());
+
+  test('beds without last check do not animate', () => {
+    renderZone();
+    const card = screen.getByText('1').closest('.bg-gray-200');
+    expect(card).not.toHaveClass('animate-pulse');
+  });
+
+  test('beds pulse after exceeding limit', () => {
+    renderZone({ statusMap: { '1': { lastCheckedAt: Date.now() - 31 * 60 * 1000 } } });
+    const card = screen.getByText('1').closest('.bg-red-100');
+    expect(card).toHaveClass('animate-pulse');
   });
 });
 
