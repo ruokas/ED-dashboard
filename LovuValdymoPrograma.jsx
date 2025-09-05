@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
 import { Button } from '@/components/ui/button';
 import Pranesimas from './Pranesimas.jsx';
@@ -43,6 +43,8 @@ export default function LovuValdymoPrograma() {
   const [zurnalas,setZurnalas]=useLocalStorageState('lovuZurnalas',[]);
   const [paieska,setPaieska]=useState('');
   const [dark,setDark]=useState(false);
+  const [alertsMuted,setAlertsMuted]=useState(false);
+  const alertedRef = useRef(new Set());
 
   useEffect(()=>{
     const lovos = Object.values(zonosLovos).flat();
@@ -64,6 +66,32 @@ export default function LovuValdymoPrograma() {
   useInterval(() => tick(x => x + 1), 1000);
 
   const pushZurnalas=tekst=>setZurnalas(l=>[...l,{ts:dabar(),vartotojas:'Anon',tekstas:tekst}].slice(-200));
+
+  useEffect(() => {
+    Object.entries(statusMap).forEach(([lova, s]) => {
+      const overdue = isOverdue(s.lastCheckedAt);
+      const alerted = alertedRef.current;
+      if (overdue && !alerted.has(lova)) {
+        alerted.add(lova);
+        pushZurnalas(`${lova}: Pradelsta`);
+        if (!alertsMuted) {
+          try {
+            if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
+              new Notification(`Lova ${lova} pradelsta`);
+            } else {
+              // Fallback garso signalas
+              const a = new Audio('/beep.mp3');
+              a.play().catch(() => {});
+            }
+          } catch (e) {
+            // Ignoruojame klaidas pranešimuose
+          }
+        }
+      } else if (!overdue && alerted.has(lova)) {
+        alerted.delete(lova);
+      }
+    });
+  }, [tick, statusMap, alertsMuted]);
   const applyFilter=lov=>{
     const s=statusMap[lov]||NUMATYTA_BUSENA;
     if(filtras===FiltravimoRezimai.TUALETAS) return s.needsWC;
@@ -84,7 +112,12 @@ export default function LovuValdymoPrograma() {
 
   return(
     <div className="min-h-screen bg-gradient-to-br from-slate-200 via-white to-slate-200 dark:from-gray-900 dark:via-gray-950 dark:to-gray-800">
-      <Header dark={dark} toggleDark={() => setDark(d => !d)} />
+      <Header
+        dark={dark}
+        toggleDark={() => setDark(d => !d)}
+        alertsMuted={alertsMuted}
+        toggleMute={() => setAlertsMuted(m => !m)}
+      />
       <main className="max-w-screen-xl mx-auto p-2">
         <Filters filtras={filtras} setFiltras={setFiltras} FiltravimoRezimai={FiltravimoRezimai}/>
         <Tabs skirtukas={skirtukas} setSkirtukas={setSkirtukas}/>
