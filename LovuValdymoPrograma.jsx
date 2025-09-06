@@ -158,12 +158,12 @@ export default function LovuValdymoPrograma() {
                 filtras={filtras}
                 setFiltras={setFiltras}
                 FiltravimoRezimai={FiltravimoRezimai}
-                className="flex-1 md:flex-[4]"
+                className="w-full md:w-auto flex-none"
               />
               <Tabs
                 skirtukas={skirtukas}
                 setSkirtukas={setSkirtukas}
-                className="flex-1 md:flex-[3]"
+                className="flex-1"
               />
             </div>
           )}

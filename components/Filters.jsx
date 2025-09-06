@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { Filter } from 'lucide-react';
 
 export default function Filters({ filtras, setFiltras, FiltravimoRezimai, className = '' }) {
   const [open, setOpen] = useState(false);
@@ -18,7 +19,13 @@ export default function Filters({ filtras, setFiltras, FiltravimoRezimai, classN
 
   return (
     <div className={`relative ${className}`}>
-      <Button className="w-full" size="md" onClick={() => setOpen(o => !o)}>
+      <Button
+        size="sm"
+        onClick={() => setOpen(o => !o)}
+        className="flex items-center px-2 w-full md:w-auto"
+        aria-label="Filtrai"
+      >
+        <Filter className="w-4 h-4 mr-1" aria-hidden="true" />
         Filtrai
       </Button>
       {open && (

@@ -8,8 +8,8 @@ export default function Tabs({ skirtukas, setSkirtukas, className = '' }) {
   return (
     <div className={`flex gap-2 ${className}`}>
       <Button
-        className="flex-1 flex items-center justify-center"
-        size="md"
+        className="flex-1 flex items-center justify-center px-4"
+        size="touch"
         onClick={() => setSkirtukas('lovos')}
         variant={skirtukas==='lovos'?'default':'outline'}
       >
@@ -17,8 +17,8 @@ export default function Tabs({ skirtukas, setSkirtukas, className = '' }) {
         Lovos
       </Button>
       <Button
-        className="flex-1 flex items-center justify-center"
-        size="md"
+        className="flex-1 flex items-center justify-center px-4"
+        size="touch"
         onClick={() => setSkirtukas('zurnalas')}
         variant={skirtukas==='zurnalas'?'default':'outline'}
       >
@@ -26,8 +26,8 @@ export default function Tabs({ skirtukas, setSkirtukas, className = '' }) {
         Žurnalas
       </Button>
       <Button
-        className="flex-1 flex items-center justify-center"
-        size="md"
+        className="flex-1 flex items-center justify-center px-4"
+        size="touch"
         onClick={() => setSkirtukas('analytics')}
         variant={skirtukas==='analytics'?'default':'outline'}
       >
