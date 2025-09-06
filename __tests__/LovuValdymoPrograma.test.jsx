@@ -111,4 +111,21 @@ describe('LovuValdymoPrograma', () => {
 
     expect(within(zone).queryByText(/^1$/)).not.toBeInTheDocument();
   });
+
+  test('mobile menu reveals filters and tabs', () => {
+    const originalWidth = window.innerWidth;
+    window.innerWidth = 500;
+    render(<LovuValdymoPrograma />);
+
+    expect(screen.queryByText('Filtrai')).toBeNull();
+    expect(screen.queryByText('Žurnalas')).toBeNull();
+
+    const menuBtn = screen.getAllByLabelText('Meniu')[1];
+    fireEvent.click(menuBtn);
+
+    expect(screen.getByText('Filtrai')).toBeInTheDocument();
+    expect(screen.getByText('Žurnalas')).toBeInTheDocument();
+
+    window.innerWidth = originalWidth;
+  });
 });
