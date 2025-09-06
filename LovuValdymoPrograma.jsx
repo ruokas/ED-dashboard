@@ -45,6 +45,7 @@ export default function LovuValdymoPrograma() {
   const [dark,setDark]=useState(false);
   const [alertsMuted,setAlertsMuted]=useState(false);
   const alertedRef = useRef(new Set());
+  const zoneRefs = useRef({});
 
   useEffect(()=>{
     const lovos = Object.values(zonosLovos).flat();
@@ -108,6 +109,16 @@ export default function LovuValdymoPrograma() {
   const undo=()=>{if(!snack)return;setStatusMap(p=>({...p,[snack.bed]:snack.prev}));setSnack(null);pushZurnalas(`Anuliuota ${snack.bed}`);};
   const handleZone=(z,user)=>{setZonuPadejejas(prev=>{const next={...prev,[z]:user};pushZurnalas(`Padėjėjas ${user||'nėra'} ${z}`);return next;});const lovos=zonosLovos[z]||[];setStatusMap(prev=>{const upd={...prev};lovos.forEach(l=>{upd[l]={...upd[l],lastCheckedAt:dabar()}});return upd});};
   const onDragEnd=res=>{if(!res.destination)return;const {source,destination,draggableId}=res;setZonosLovos(prev=>{const result={...prev};const src=Array.from(result[source.droppableId]);const [moved]=src.splice(source.index,1);if(source.droppableId===destination.droppableId){src.splice(destination.index,0,moved);result[source.droppableId]=src;}else{const dest=Array.from(result[destination.droppableId]);dest.splice(destination.index,0,moved);result[source.droppableId]=src;result[destination.droppableId]=dest;}return result;});pushZurnalas(`Perkelta ${draggableId} į ${destination.droppableId}`);};
+  const scrollToZone = zona => {
+    const el = zoneRefs.current[zona];
+    if (el && el.scrollIntoView) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      el.classList.add('ring-2', 'ring-yellow-300');
+      setTimeout(() => {
+        el.classList.remove('ring-2', 'ring-yellow-300');
+      }, 1500);
+    }
+  };
   const filteredLog = filterLogEntries(zurnalas, paieska);
 
   return(
@@ -117,6 +128,8 @@ export default function LovuValdymoPrograma() {
         toggleDark={() => setDark(d => !d)}
         alertsMuted={alertsMuted}
         toggleMute={() => setAlertsMuted(m => !m)}
+        zones={Object.keys(zonosLovos)}
+        onSelectZone={scrollToZone}
       />
       <main className="max-w-screen-2xl mx-auto p-2">
         <Filters filtras={filtras} setFiltras={setFiltras} FiltravimoRezimai={FiltravimoRezimai}/>
@@ -126,6 +139,7 @@ export default function LovuValdymoPrograma() {
           <DragDropContext onDragEnd={onDragEnd}>
             {Object.entries(zonosLovos).map(([zona,lovos])=> (
               <ZoneSection
+                ref={el => (zoneRefs.current[zona] = el)}
                 key={zona}
                 zona={zona}
                 lovos={lovos}

@@ -105,7 +105,7 @@ function LovosKortele({ lova, index, status, onWC, onClean, onCheck, onReset }) 
   );
 }
 
-export default function ZoneSection({
+const ZoneSection = React.forwardRef(function ZoneSection({
   zona,
   lovos,
   statusMap,
@@ -117,11 +117,11 @@ export default function ZoneSection({
   padejejas,
   onPadejejasChange,
   checkAll,
-}) {
+}, ref) {
   const [expanded, setExpanded] = React.useState(true);
 
   return (
-    <div className="mb-2">
+    <div ref={ref} className="mb-2">
       <div className="flex items-center mb-1 gap-2">
         <Button
           size="icon"
@@ -176,4 +176,6 @@ export default function ZoneSection({
       )}
     </div>
   );
-}
+});
+
+export default ZoneSection;
