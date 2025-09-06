@@ -10,7 +10,7 @@ export default function StatusSummary({ statusMap }) {
   const overdueCount = statuses.filter(s => isOverdue(s?.lastCheckedAt)).length;
 
   return (
-    <div className="grid grid-cols-3 gap-2 my-2">
+    <div className="grid grid-cols-3 gap-2 my-1">
       <Card aria-label="needs-wc" className="flex items-center justify-center gap-2 p-2 text-sm">
         <Toilet className="text-blue-600" />
         <span>{wcCount}</span>
