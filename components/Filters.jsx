@@ -20,9 +20,9 @@ export default function Filters({ filtras, setFiltras, FiltravimoRezimai, classN
   return (
     <div className={`relative ${className}`}>
       <Button
-        size="sm"
+        size="touch"
         onClick={() => setOpen(o => !o)}
-        className="flex items-center px-2 w-full md:w-auto"
+        className="w-full md:w-auto"
         aria-label="Filtrai"
       >
         <Filter className="w-4 h-4 mr-1" aria-hidden="true" />
