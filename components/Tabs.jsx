@@ -26,7 +26,7 @@ export default function Tabs({ skirtukas, setSkirtukas, className = '' }) {
         onClick={() => setSkirtukas('analytics')}
         variant={skirtukas==='analytics'?'default':'outline'}
       >
-        Analytics
+        Analizė
       </Button>
     </div>
   );
