@@ -50,7 +50,7 @@ export default function Header({
         className="glass text-gray-900 dark:text-gray-100 hover:bg-white/40 dark:hover:bg-gray-900/40"
         onClick={toggleMute}
       >
-        {alertsMuted ? 'Unmute' : 'Mute'}
+        {alertsMuted ? 'Įjungti garsą' : 'Nutildyti'}
       </Button>
       <Button
         size="sm"
@@ -58,7 +58,7 @@ export default function Header({
         className="glass text-gray-900 dark:text-gray-100 hover:bg-white/40 dark:hover:bg-gray-900/40"
         onClick={toggleDark}
       >
-        {dark ? 'Light' : 'Dark'}
+        {dark ? 'Šviesus' : 'Tamsus'}
       </Button>
     </>
   );
