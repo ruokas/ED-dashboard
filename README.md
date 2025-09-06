@@ -1,4 +1,4 @@
-# ED-dashboard
+# SPS lovų priežiūros programa
 
 A simple React program for managing hospital bed assignments. The main component `LovuValdymoPrograma.jsx` contains the dashboard logic.
 
