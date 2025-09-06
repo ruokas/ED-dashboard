@@ -28,7 +28,8 @@ describe('LovuValdymoPrograma', () => {
     const wcButton = within(card).getAllByRole('button')[0];
     fireEvent.click(wcButton);
 
-    fireEvent.click(screen.getByText('Tualetas'));
+    fireEvent.click(screen.getByText('Filtrai'));
+    fireEvent.click(screen.getByText('TUALETAS'));
 
     expect(within(zone).getByText(/^1$/)).toBeInTheDocument();
     expect(within(zone).queryByText(/^2$/)).not.toBeInTheDocument();
@@ -43,7 +44,8 @@ describe('LovuValdymoPrograma', () => {
     const wcButton = within(card).getAllByRole('button')[0];
     fireEvent.click(wcButton);
 
-    fireEvent.click(screen.getByText('Tualetas'));
+    fireEvent.click(screen.getByText('Filtrai'));
+    fireEvent.click(screen.getByText('TUALETAS'));
     expect(within(zone).getByText(/^1$/)).toBeInTheDocument();
 
     const msg = screen.getByText('1: Tualetas');
@@ -104,7 +106,8 @@ describe('LovuValdymoPrograma', () => {
 
     fireEvent.click(wcButton);
     fireEvent.click(resetButton);
-    fireEvent.click(screen.getByText('Tualetas'));
+    fireEvent.click(screen.getByText('Filtrai'));
+    fireEvent.click(screen.getByText('TUALETAS'));
 
     expect(within(zone).queryByText(/^1$/)).not.toBeInTheDocument();
   });
