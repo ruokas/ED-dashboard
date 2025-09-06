@@ -133,8 +133,19 @@ export default function LovuValdymoPrograma() {
         onSelectZone={scrollToZone}
       />
       <main className="max-w-screen-2xl mx-auto p-2">
-        <Filters filtras={filtras} setFiltras={setFiltras} FiltravimoRezimai={FiltravimoRezimai}/>
-        <Tabs skirtukas={skirtukas} setSkirtukas={setSkirtukas}/>
+        <nav className="flex flex-col md:flex-row gap-2 mb-1">
+          <Filters
+            filtras={filtras}
+            setFiltras={setFiltras}
+            FiltravimoRezimai={FiltravimoRezimai}
+            className="flex-1 md:flex-[4]"
+          />
+          <Tabs
+            skirtukas={skirtukas}
+            setSkirtukas={setSkirtukas}
+            className="flex-1 md:flex-[3]"
+          />
+        </nav>
         {skirtukas==='lovos' && <StatusSummary statusMap={statusMap}/>}
         {skirtukas==='lovos' ? (
           <DragDropContext onDragEnd={onDragEnd}>
