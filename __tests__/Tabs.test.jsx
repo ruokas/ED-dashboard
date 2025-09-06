@@ -6,7 +6,7 @@ describe('Tabs', () => {
   test.each([
     ['Lovos', 'lovos'],
     ['Žurnalas', 'zurnalas'],
-    ['Analytics', 'analytics']
+    ['Analizė', 'analytics']
   ])('clicking %s sets skirtukas', (label, value) => {
     const setSkirtukas = jest.fn();
     render(<Tabs skirtukas="lovos" setSkirtukas={setSkirtukas} />);
@@ -17,7 +17,7 @@ describe('Tabs', () => {
   test('active tab has default variant', () => {
     const setSkirtukas = jest.fn();
     render(<Tabs skirtukas="analytics" setSkirtukas={setSkirtukas} />);
-    expect(screen.getByText('Analytics')).toHaveClass('bg-blue-600');
+    expect(screen.getByText('Analizė')).toHaveClass('bg-blue-600');
     expect(screen.getByText('Lovos')).toHaveClass('border-gray-300');
     expect(screen.getByText('Žurnalas')).toHaveClass('border-gray-300');
   });
