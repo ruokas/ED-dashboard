@@ -22,7 +22,7 @@ describe('LovuValdymoPrograma', () => {
   test('filters beds by toilet status', () => {
     render(<LovuValdymoPrograma />);
 
-    const zone = screen.getByText('A zona').parentElement.parentElement;
+    const zone = screen.getByRole('heading', { name: 'A zona' }).parentElement.parentElement;
     const bed1Label = within(zone).getByText(/^1$/);
     const card = bed1Label.parentElement.parentElement;
     const wcButton = within(card).getAllByRole('button')[0];
@@ -37,7 +37,7 @@ describe('LovuValdymoPrograma', () => {
   test('undo reverses status change', () => {
     render(<LovuValdymoPrograma />);
 
-    const zone = screen.getByText('A zona').parentElement.parentElement;
+    const zone = screen.getByRole('heading', { name: 'A zona' }).parentElement.parentElement;
     const bed1Label = within(zone).getByText(/^1$/);
     const card = bed1Label.parentElement.parentElement;
     const wcButton = within(card).getAllByRole('button')[0];
@@ -56,13 +56,13 @@ describe('LovuValdymoPrograma', () => {
   test('zone helper update marks beds checked', () => {
     render(<LovuValdymoPrograma />);
 
-    const row = screen.getByText('A zona').parentElement;
+    const row = screen.getByRole('heading', { name: 'A zona' }).parentElement;
     const input = within(row).getByPlaceholderText('Padėjėjas');
     fireEvent.change(input, { target: { value: 'Jonas' } });
 
     expect(input.value).toBe('Jonas');
 
-    const zone = screen.getByText('A zona').parentElement.parentElement;
+    const zone = screen.getByRole('heading', { name: 'A zona' }).parentElement.parentElement;
     const bed1Label = within(zone).getByText(/^1$/);
     const card = bed1Label.parentElement.parentElement;
     expect(within(card).getByText(/Patikrinta/)).toBeInTheDocument();
@@ -72,10 +72,10 @@ describe('LovuValdymoPrograma', () => {
     render(<LovuValdymoPrograma />);
 
     expect(
-      within(screen.getByText('A zona').parentElement.parentElement).getByText(/^1$/)
+      within(screen.getByRole('heading', { name: 'A zona' }).parentElement.parentElement).getByText(/^1$/)
     ).toBeInTheDocument();
     expect(
-      within(screen.getByText('B zona').parentElement.parentElement).queryByText(/^1$/)
+      within(screen.getByRole('heading', { name: 'B zona' }).parentElement.parentElement).queryByText(/^1$/)
     ).toBeNull();
 
     act(() => {
@@ -86,8 +86,8 @@ describe('LovuValdymoPrograma', () => {
       });
     });
 
-    const zone1 = screen.getByText('A zona').parentElement.parentElement;
-    const zone2 = screen.getByText('B zona').parentElement.parentElement;
+    const zone1 = screen.getByRole('heading', { name: 'A zona' }).parentElement.parentElement;
+    const zone2 = screen.getByRole('heading', { name: 'B zona' }).parentElement.parentElement;
     expect(within(zone1).getByText(/^1$/)).toBeInTheDocument();
     expect(within(zone2).queryByText(/^1$/)).toBeNull();
   });
@@ -95,7 +95,7 @@ describe('LovuValdymoPrograma', () => {
   test('reset button clears bed status', () => {
     render(<LovuValdymoPrograma />);
 
-    const zone = screen.getByText('A zona').parentElement.parentElement;
+    const zone = screen.getByRole('heading', { name: 'A zona' }).parentElement.parentElement;
     const bed1Label = within(zone).getByText(/^1$/);
     const card = bed1Label.parentElement.parentElement;
     const buttons = within(card).getAllByRole('button');
