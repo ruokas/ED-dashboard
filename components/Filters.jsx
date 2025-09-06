@@ -6,7 +6,7 @@ export default function Filters({ filtras, setFiltras, FiltravimoRezimai, classN
     <div className={`flex gap-2 ${className}`}>
       <Button
         className="flex-1 text-center"
-        size="sm"
+        size="md"
         onClick={() => setFiltras(FiltravimoRezimai.VISI)}
         variant={filtras===FiltravimoRezimai.VISI?'default':'outline'}
       >
@@ -14,7 +14,7 @@ export default function Filters({ filtras, setFiltras, FiltravimoRezimai, classN
       </Button>
       <Button
         className="flex-1 text-center"
-        size="sm"
+        size="md"
         onClick={() => setFiltras(FiltravimoRezimai.TUALETAS)}
         variant={filtras===FiltravimoRezimai.TUALETAS?'default':'outline'}
       >
@@ -22,7 +22,7 @@ export default function Filters({ filtras, setFiltras, FiltravimoRezimai, classN
       </Button>
       <Button
         className="flex-1 text-center"
-        size="sm"
+        size="md"
         onClick={() => setFiltras(FiltravimoRezimai.VALYMAS)}
         variant={filtras===FiltravimoRezimai.VALYMAS?'default':'outline'}
       >
@@ -30,7 +30,7 @@ export default function Filters({ filtras, setFiltras, FiltravimoRezimai, classN
       </Button>
       <Button
         className="flex-1 text-center"
-        size="sm"
+        size="md"
         onClick={() => setFiltras(FiltravimoRezimai.UZDELTAS)}
         variant={filtras===FiltravimoRezimai.UZDELTAS?'warning':'outline'}
       >
