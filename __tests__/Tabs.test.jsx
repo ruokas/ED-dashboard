@@ -14,6 +14,14 @@ describe('Tabs', () => {
     expect(setSkirtukas).toHaveBeenCalledWith(value);
   });
 
+  test('renders icons for all tabs', () => {
+    const setSkirtukas = jest.fn();
+    render(<Tabs skirtukas="lovos" setSkirtukas={setSkirtukas} />);
+    expect(screen.getByRole('img', { name: /lovos/i })).toBeInTheDocument();
+    expect(screen.getByRole('img', { name: /žurnalas/i })).toBeInTheDocument();
+    expect(screen.getByRole('img', { name: /analizė/i })).toBeInTheDocument();
+  });
+
   test('active tab has default variant', () => {
     const setSkirtukas = jest.fn();
     render(<Tabs skirtukas="analytics" setSkirtukas={setSkirtukas} />);
