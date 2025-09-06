@@ -1,9 +1,9 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 
-export default function Tabs({ skirtukas, setSkirtukas }) {
+export default function Tabs({ skirtukas, setSkirtukas, className = '' }) {
   return (
-    <div className="flex gap-2 mb-1">
+    <div className={`flex gap-2 ${className}`}>
       <Button
         className="flex-1 text-center"
         size="sm"
