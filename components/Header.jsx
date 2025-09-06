@@ -22,7 +22,7 @@ export default function Header({
   return (
     <header className="glass text-gray-900 dark:text-gray-100 mb-2">
       <div className="max-w-screen-2xl mx-auto px-4 py-2 flex items-center justify-between">
-        <h1 className="text-lg font-semibold">ED Dashboard</h1>
+        <h1 className="text-lg font-semibold">SPS lovų priežiūros programa</h1>
         <div className="flex gap-2 items-center">
           {zones.length > 0 && (
             <select
