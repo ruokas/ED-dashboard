@@ -20,6 +20,14 @@ export default function Tabs({ skirtukas, setSkirtukas }) {
       >
         Žurnalas
       </Button>
+      <Button
+        className="flex-1 text-center"
+        size="sm"
+        onClick={() => setSkirtukas('analytics')}
+        variant={skirtukas==='analytics'?'default':'outline'}
+      >
+        Analytics
+      </Button>
     </div>
   );
 }

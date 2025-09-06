@@ -4,17 +4,21 @@ import Tabs from '../components/Tabs.jsx';
 
 describe('Tabs', () => {
   test.each([
-    ['Lovos', 'lovos', 'zurnalas', 'Žurnalas'],
-    ['Žurnalas', 'zurnalas', 'lovos', 'Lovos']
-  ])('clicking %s sets skirtukas and variant', (label, value, initial, otherLabel) => {
+    ['Lovos', 'lovos'],
+    ['Žurnalas', 'zurnalas'],
+    ['Analytics', 'analytics']
+  ])('clicking %s sets skirtukas', (label, value) => {
     const setSkirtukas = jest.fn();
-    const { rerender } = render(<Tabs skirtukas={initial} setSkirtukas={setSkirtukas} />);
-
+    render(<Tabs skirtukas="lovos" setSkirtukas={setSkirtukas} />);
     fireEvent.click(screen.getByText(label));
     expect(setSkirtukas).toHaveBeenCalledWith(value);
+  });
 
-    rerender(<Tabs skirtukas={value} setSkirtukas={setSkirtukas} />);
-    expect(screen.getByText(label)).toHaveClass('bg-blue-600');
-    expect(screen.getByText(otherLabel)).toHaveClass('border-gray-300');
+  test('active tab has default variant', () => {
+    const setSkirtukas = jest.fn();
+    render(<Tabs skirtukas="analytics" setSkirtukas={setSkirtukas} />);
+    expect(screen.getByText('Analytics')).toHaveClass('bg-blue-600');
+    expect(screen.getByText('Lovos')).toHaveClass('border-gray-300');
+    expect(screen.getByText('Žurnalas')).toHaveClass('border-gray-300');
   });
 });

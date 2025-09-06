@@ -9,6 +9,7 @@ import Tabs from './components/Tabs.jsx';
 import ZoneSection from './components/ZoneSection.jsx';
 import Header from './components/Header.jsx';
 import StatusSummary from './components/StatusSummary.jsx';
+import Analytics from './components/Analytics.jsx';
 import { NUMATYTA_BUSENA, dabar, isOverdue, resetBedStatus } from '@/src/utils/bedState.js';
 import { exportLogToCsv } from '@/src/utils/exportCsv.js';
 import { filterLogEntries } from '@/src/utils/logFilter.js';
@@ -134,8 +135,8 @@ export default function LovuValdymoPrograma() {
       <main className="max-w-screen-2xl mx-auto p-2">
         <Filters filtras={filtras} setFiltras={setFiltras} FiltravimoRezimai={FiltravimoRezimai}/>
         <Tabs skirtukas={skirtukas} setSkirtukas={setSkirtukas}/>
-        {skirtukas==='lovos' && <StatusSummary statusMap={statusMap}/>} 
-        {skirtukas==='lovos'?( 
+        {skirtukas==='lovos' && <StatusSummary statusMap={statusMap}/>}
+        {skirtukas==='lovos' ? (
           <DragDropContext onDragEnd={onDragEnd}>
             {Object.entries(zonosLovos).map(([zona,lovos])=> (
               <ZoneSection
@@ -155,7 +156,7 @@ export default function LovuValdymoPrograma() {
               />
             ))}
           </DragDropContext>
-        ):(
+        ) : skirtukas==='zurnalas' ? (
           <div>
             <div className="flex items-center gap-2 mb-1">
               <input className="border p-1 rounded text-xs flex-1 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100" placeholder="Ieškoti žurnale" value={paieska} onChange={e=>setPaieska(e.target.value)}/>
@@ -169,6 +170,8 @@ export default function LovuValdymoPrograma() {
                 ))}
               </ul>
           </div>
+        ) : (
+          <Analytics log={zurnalas}/>
         )}
       </main>
       {snack&&<Pranesimas msg={snack.msg} onUndo={undo}/>}
