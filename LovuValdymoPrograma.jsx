@@ -118,7 +118,7 @@ export default function LovuValdymoPrograma() {
         alertsMuted={alertsMuted}
         toggleMute={() => setAlertsMuted(m => !m)}
       />
-      <main className="max-w-screen-xl mx-auto p-2">
+      <main className="max-w-screen-2xl mx-auto p-2">
         <Filters filtras={filtras} setFiltras={setFiltras} FiltravimoRezimai={FiltravimoRezimai}/>
         <Tabs skirtukas={skirtukas} setSkirtukas={setSkirtukas}/>
         {skirtukas==='lovos' && <StatusSummary statusMap={statusMap}/>} 
