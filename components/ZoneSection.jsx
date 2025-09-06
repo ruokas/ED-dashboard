@@ -36,7 +36,7 @@ function LovosKortele({ lova, index, status, onWC, onClean, onCheck, onReset }) 
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          className={`flex flex-col p-1 w-full min-h-24 sm:min-h-28 h-auto hover:scale-105 transition-transform ${rysys}`}
+          className={`flex flex-col p-1 w-full min-h-20 sm:min-h-24 h-auto hover:scale-105 transition-transform ${rysys}`}
           title={s.lastBy ? `${s.lastBy} • ${new Date(s.lastAt).toLocaleTimeString()}` : ''}
         >
           <CardHeader className="p-1 flex justify-center">
@@ -121,7 +121,7 @@ export default function ZoneSection({
   const [expanded, setExpanded] = React.useState(true);
 
   return (
-    <div className="mb-3">
+    <div className="mb-2">
       <div className="flex items-center mb-1 gap-2">
         <Button
           size="icon"
@@ -155,7 +155,7 @@ export default function ZoneSection({
             <div
               ref={provided.innerRef}
               {...provided.droppableProps}
-              className="grid grid-cols-[repeat(auto-fit,minmax(8rem,1fr))] sm:grid-cols-[repeat(auto-fit,minmax(9rem,1fr))] md:grid-cols-[repeat(auto-fit,minmax(10rem,1fr))] lg:grid-cols-[repeat(auto-fit,minmax(11rem,1fr))] gap-1"
+              className="grid grid-cols-[repeat(auto-fit,minmax(7rem,1fr))] sm:grid-cols-[repeat(auto-fit,minmax(8rem,1fr))] md:grid-cols-[repeat(auto-fit,minmax(9rem,1fr))] lg:grid-cols-[repeat(auto-fit,minmax(10rem,1fr))] gap-1"
             >
               {lovos.filter(applyFilter).map((l, i) => (
                 <LovosKortele
