@@ -45,6 +45,13 @@ export default function LovuValdymoPrograma() {
   const [paieska,setPaieska]=useState('');
   const [dark,setDark]=useState(false);
   const [alertsMuted,setAlertsMuted]=useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [isMd, setIsMd] = useState(() => window.innerWidth >= 768);
+  useEffect(() => {
+    const onResize = () => setIsMd(window.innerWidth >= 768);
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
   const alertedRef = useRef(new Set());
   const zoneRefs = useRef({});
 
@@ -133,18 +140,33 @@ export default function LovuValdymoPrograma() {
         onSelectZone={scrollToZone}
       />
       <main className="max-w-screen-2xl mx-auto p-2">
-        <nav className="flex flex-col md:flex-row gap-2 mb-1">
-          <Filters
-            filtras={filtras}
-            setFiltras={setFiltras}
-            FiltravimoRezimai={FiltravimoRezimai}
-            className="flex-1 md:flex-[4]"
-          />
-          <Tabs
-            skirtukas={skirtukas}
-            setSkirtukas={setSkirtukas}
-            className="flex-1 md:flex-[3]"
-          />
+        <nav className="mb-1 flex flex-col">
+          {!isMd && (
+            <Button
+              size="sm"
+              variant="outline"
+              className="mb-1 self-start md:hidden"
+              onClick={() => setMenuOpen(o => !o)}
+              aria-label="Meniu"
+            >
+              ☰
+            </Button>
+          )}
+          {(menuOpen || isMd) && (
+            <div className="flex flex-col md:flex-row gap-1">
+              <Filters
+                filtras={filtras}
+                setFiltras={setFiltras}
+                FiltravimoRezimai={FiltravimoRezimai}
+                className="flex-1 md:flex-[4]"
+              />
+              <Tabs
+                skirtukas={skirtukas}
+                setSkirtukas={setSkirtukas}
+                className="flex-1 md:flex-[3]"
+              />
+            </div>
+          )}
         </nav>
         {skirtukas==='lovos' && <StatusSummary statusMap={statusMap}/>}
         {skirtukas==='lovos' ? (
