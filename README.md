@@ -38,7 +38,7 @@ Example: after filtering the log, click **Eksportuoti CSV** to save `lovu_zurnal
 
 ### Dark Mode Toggle
 A button in the header switches between light and dark themes.
-Example: click **Dark** to enable the darker palette; click again to return to light mode.
+Example: click **Tamsus** to enable the darker palette; click again to return to **Šviesus** mode.
 Accessibility: the toggle button is focusable via keyboard and preserves contrast for better readability.
 
 
