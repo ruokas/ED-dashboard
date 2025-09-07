@@ -30,6 +30,7 @@ function LovuValdymoPrograma() {
   const [alertsMuted, setAlertsMuted] = useState(false);
   const alertedRef = useRef(new Set());
   const zoneRefs = useRef({});
+  const [isTouch, setIsTouch] = useState(false);
 
   const pushZurnalas = tekst =>
     setZurnalas(l => [...l, { ts: dabar(), vartotojas: 'Anon', tekstas: tekst }].slice(-200));
@@ -70,6 +71,20 @@ function LovuValdymoPrograma() {
   }, [dark]);
 
   useInterval(() => tick(x => x + 1), 1000);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.matchMedia) {
+      const mq = window.matchMedia('(pointer: coarse)');
+      setIsTouch(mq.matches);
+      const handler = e => setIsTouch(e.matches);
+      if (mq.addEventListener) mq.addEventListener('change', handler);
+      else mq.addListener(handler);
+      return () => {
+        if (mq.removeEventListener) mq.removeEventListener('change', handler);
+        else mq.removeListener(handler);
+      };
+    }
+  }, []);
 
   useEffect(() => {
     Object.entries(statusMap).forEach(([lova, s]) => {
@@ -135,8 +150,8 @@ function LovuValdymoPrograma() {
         />
         {skirtukas === 'lovos' && <StatusSummary statusMap={statusMap} />}
         {skirtukas === 'lovos' ? (
-          <DragDropContext onDragEnd={onDragEnd}>
-            {Object.entries(zonosLovos).map(([zona, lovos]) => (
+          isTouch ? (
+            Object.entries(zonosLovos).map(([zona, lovos]) => (
               <ZoneSection
                 ref={el => (zoneRefs.current[zona] = el)}
                 key={zona}
@@ -151,9 +166,31 @@ function LovuValdymoPrograma() {
                 padejejas={zonuPadejejas[zona]}
                 onPadejejasChange={user => handleZone(zona, user)}
                 checkAll={() => checkAll(zona)}
+                isTouch={isTouch}
               />
-            ))}
-          </DragDropContext>
+            ))
+          ) : (
+            <DragDropContext onDragEnd={onDragEnd}>
+              {Object.entries(zonosLovos).map(([zona, lovos]) => (
+                <ZoneSection
+                  ref={el => (zoneRefs.current[zona] = el)}
+                  key={zona}
+                  zona={zona}
+                  lovos={lovos}
+                  statusMap={statusMap}
+                  applyFilter={applyFilter}
+                  onWC={toggleWC}
+                  onClean={toggleCleaning}
+                  onCheck={markChecked}
+                  onReset={resetLova}
+                  padejejas={zonuPadejejas[zona]}
+                  onPadejejasChange={user => handleZone(zona, user)}
+                  checkAll={() => checkAll(zona)}
+                  isTouch={false}
+                />
+              ))}
+            </DragDropContext>
+          )
         ) : skirtukas === 'zurnalas' ? (
           <LogView log={zurnalas} />
         ) : (
