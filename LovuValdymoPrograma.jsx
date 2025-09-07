@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { DragDropContext } from 'react-beautiful-dnd';
 import Pranesimas from './Pranesimas.jsx';
 import useLocalStorageState from './hooks/useLocalStorageState.js';
-import useInterval from './hooks/useInterval.js';
 import ZoneSection from './components/ZoneSection.jsx';
 import Header from './components/Header.jsx';
 import StatusSummary from './components/StatusSummary.jsx';
@@ -23,7 +22,6 @@ const FiltravimoRezimai = { VISI: 'VISI', TUALETAS: 'TUALETAS', VALYMAS: 'VALYMA
 
 function LovuValdymoPrograma() {
   const [filtras, setFiltras] = useState(FiltravimoRezimai.VISI);
-  const [, tick] = useState(0);
   const [skirtukas, setSkirtukas] = useState('lovos');
   const [zurnalas, setZurnalas] = useLocalStorageState('lovuZurnalas', []);
   const [dark, setDark] = useState(false);
@@ -70,8 +68,6 @@ function LovuValdymoPrograma() {
     document.documentElement.classList.toggle('dark', dark);
   }, [dark]);
 
-  useInterval(() => tick(x => x + 1), 1000);
-
   useEffect(() => {
     if (typeof window !== 'undefined' && window.matchMedia) {
       const mq = window.matchMedia('(pointer: coarse)');
@@ -87,29 +83,33 @@ function LovuValdymoPrograma() {
   }, []);
 
   useEffect(() => {
-    Object.entries(statusMap).forEach(([lova, s]) => {
-      const overdue = isOverdue(s.lastCheckedAt);
-      const alerted = alertedRef.current;
-      if (overdue && !alerted.has(lova)) {
-        alerted.add(lova);
-        pushZurnalas(`${lova}: Pradelsta`);
-        if (!alertsMuted) {
-          try {
-            if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
-              new Notification(`Lova ${lova} pradelsta`);
-            } else {
-              const a = new Audio('/beep.mp3');
-              a.play().catch(() => {});
+    const interval = setInterval(() => {
+      Object.entries(statusMap).forEach(([lova, s]) => {
+        const overdue = isOverdue(s.lastCheckedAt);
+        const alerted = alertedRef.current;
+        if (overdue && !alerted.has(lova)) {
+          alerted.add(lova);
+          pushZurnalas(`${lova}: Pradelsta`);
+          if (!alertsMuted) {
+            try {
+              if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
+                new Notification(`Lova ${lova} pradelsta`);
+              } else {
+                const a = new Audio('/beep.mp3');
+                a.play().catch(() => {});
+              }
+            } catch (e) {
+              // Ignoruojame klaidas pranešimuose
             }
-          } catch (e) {
-            // Ignoruojame klaidas pranešimuose
           }
+        } else if (!overdue && alerted.has(lova)) {
+          alerted.delete(lova);
         }
-      } else if (!overdue && alerted.has(lova)) {
-        alerted.delete(lova);
-      }
-    });
-  }, [tick, statusMap, alertsMuted]);
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [statusMap, alertsMuted]);
 
   const applyFilter = lov => {
     const s = statusMap[lov] || NUMATYTA_BUSENA;
