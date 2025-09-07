@@ -75,19 +75,19 @@ describe('ZoneSection collapse toggle', () => {
   });
 });
 
-describe('ZoneSection overdue animation', () => {
+describe('ZoneSection overdue styling', () => {
   afterEach(() => cleanup());
 
-  test('beds without last check do not animate', () => {
+  test('beds without last check use default styling', () => {
     renderZone();
     const card = screen.getByText('1').closest('.bg-gray-200');
-    expect(card).not.toHaveClass('animate-pulse');
+    expect(card).not.toHaveClass('border-red-500');
   });
 
-  test('beds pulse after exceeding limit', () => {
+  test('beds show red styling after exceeding limit', () => {
     renderZone({ statusMap: { '1': { lastCheckedAt: Date.now() - 31 * 60 * 1000 } } });
     const card = screen.getByText('1').closest('.bg-red-100');
-    expect(card).toHaveClass('animate-pulse');
+    expect(card).toHaveClass('border-red-500');
   });
 });
 
