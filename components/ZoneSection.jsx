@@ -17,6 +17,7 @@ const ZoneSection = React.forwardRef(function ZoneSection({
   padejejas,
   onPadejejasChange,
   checkAll,
+  isTouch,
 }, ref) {
   const [expanded, setExpanded] = React.useState(true);
 
@@ -50,29 +51,47 @@ const ZoneSection = React.forwardRef(function ZoneSection({
         </Button>
       </div>
       {expanded && (
-        <Droppable droppableId={zona}>
-          {provided => (
-            <div
-              ref={provided.innerRef}
-              {...provided.droppableProps}
-              className="grid grid-cols-[repeat(auto-fit,minmax(7rem,1fr))] sm:grid-cols-[repeat(auto-fit,minmax(8rem,1fr))] md:grid-cols-[repeat(auto-fit,minmax(9rem,1fr))] lg:grid-cols-[repeat(auto-fit,minmax(10rem,1fr))] gap-1"
-            >
-              {lovos.filter(applyFilter).map((l, i) => (
-                <LovosKortele
-                  key={l}
-                  index={i}
-                  lova={l}
-                  status={statusMap[l]}
-                  onWC={onWC}
-                  onClean={onClean}
-                  onCheck={onCheck}
-                  onReset={onReset}
-                />
-              ))}
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
+        isTouch ? (
+          <div className="grid grid-cols-[repeat(auto-fit,minmax(7rem,1fr))] sm:grid-cols-[repeat(auto-fit,minmax(8rem,1fr))] md:grid-cols-[repeat(auto-fit,minmax(9rem,1fr))] lg:grid-cols-[repeat(auto-fit,minmax(10rem,1fr))] gap-1">
+            {lovos.filter(applyFilter).map((l, i) => (
+              <LovosKortele
+                key={l}
+                index={i}
+                lova={l}
+                status={statusMap[l]}
+                onWC={onWC}
+                onClean={onClean}
+                onCheck={onCheck}
+                onReset={onReset}
+                isTouch
+              />
+            ))}
+          </div>
+        ) : (
+          <Droppable droppableId={zona}>
+            {provided => (
+              <div
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+                className="grid grid-cols-[repeat(auto-fit,minmax(7rem,1fr))] sm:grid-cols-[repeat(auto-fit,minmax(8rem,1fr))] md:grid-cols-[repeat(auto-fit,minmax(9rem,1fr))] lg:grid-cols-[repeat(auto-fit,minmax(10rem,1fr))] gap-1"
+              >
+                {lovos.filter(applyFilter).map((l, i) => (
+                  <LovosKortele
+                    key={l}
+                    index={i}
+                    lova={l}
+                    status={statusMap[l]}
+                    onWC={onWC}
+                    onClean={onClean}
+                    onCheck={onCheck}
+                    onReset={onReset}
+                  />
+                ))}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        )
       )}
     </div>
   );
@@ -90,10 +109,12 @@ ZoneSection.propTypes = {
   padejejas: PropTypes.string,
   onPadejejasChange: PropTypes.func.isRequired,
   checkAll: PropTypes.func.isRequired,
+  isTouch: PropTypes.bool,
 };
 
 ZoneSection.defaultProps = {
   padejejas: '',
+  isTouch: false,
 };
 
 export default ZoneSection;
