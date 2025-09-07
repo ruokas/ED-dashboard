@@ -1,12 +1,13 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Button } from '@/components/ui/button';
 
-export default function Header({
+function Header({
   dark,
   toggleDark,
   alertsMuted,
   toggleMute,
-  zones = [],
+  zones,
   onSelectZone,
 }) {
   const [selected, setSelected] = React.useState('');
@@ -86,3 +87,23 @@ export default function Header({
     </header>
   );
 }
+
+Header.propTypes = {
+  dark: PropTypes.bool,
+  toggleDark: PropTypes.func,
+  alertsMuted: PropTypes.bool,
+  toggleMute: PropTypes.func,
+  zones: PropTypes.arrayOf(PropTypes.string),
+  onSelectZone: PropTypes.func,
+};
+
+Header.defaultProps = {
+  dark: false,
+  toggleDark: () => {},
+  alertsMuted: false,
+  toggleMute: () => {},
+  zones: [],
+  onSelectZone: null,
+};
+
+export default Header;

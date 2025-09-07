@@ -29,4 +29,16 @@ describe('Tabs', () => {
     expect(screen.getByText('Lovos')).toHaveClass('border-gray-300');
     expect(screen.getByText('Žurnalas')).toHaveClass('border-gray-300');
   });
+
+  test('default className and invalid handler warning', () => {
+    const { container } = render(<Tabs skirtukas="lovos" setSkirtukas={() => {}} />);
+    const root = container.firstChild;
+    expect(root).toHaveClass('flex', 'gap-2');
+    expect(root.classList.length).toBe(2);
+
+    const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    render(<Tabs skirtukas="lovos" setSkirtukas={42} />);
+    expect(spy).toHaveBeenCalled();
+    spy.mockRestore();
+  });
 });
