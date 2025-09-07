@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
 import { DragDropContext } from 'react-beautiful-dnd';
 import Pranesimas from './Pranesimas.jsx';
 import useLocalStorageState from './hooks/useLocalStorageState.js';
@@ -20,7 +21,7 @@ const ZONOS = {
 };
 const FiltravimoRezimai = { VISI: 'VISI', TUALETAS: 'TUALETAS', VALYMAS: 'VALYMAS', UZDELTAS: 'UZDELTAS' };
 
-export default function LovuValdymoPrograma() {
+function LovuValdymoPrograma() {
   const [filtras, setFiltras] = useState(FiltravimoRezimai.VISI);
   const [, tick] = useState(0);
   const [skirtukas, setSkirtukas] = useState('lovos');
@@ -163,4 +164,10 @@ export default function LovuValdymoPrograma() {
     </div>
   );
 }
+
+LovuValdymoPrograma.propTypes = {};
+
+LovuValdymoPrograma.defaultProps = {};
+
+export default LovuValdymoPrograma;
 

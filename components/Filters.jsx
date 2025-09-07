@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { Button } from '@/components/ui/button';
 import { Filter } from 'lucide-react';
 
-export default function Filters({ filtras, setFiltras, FiltravimoRezimai, className = '' }) {
+function Filters({ filtras, setFiltras, FiltravimoRezimai, className }) {
   const [open, setOpen] = useState(false);
 
   const handleSelect = mode => {
@@ -46,3 +47,16 @@ export default function Filters({ filtras, setFiltras, FiltravimoRezimai, classN
     </div>
   );
 }
+
+Filters.propTypes = {
+  filtras: PropTypes.string.isRequired,
+  setFiltras: PropTypes.func.isRequired,
+  FiltravimoRezimai: PropTypes.object.isRequired,
+  className: PropTypes.string,
+};
+
+Filters.defaultProps = {
+  className: '',
+};
+
+export default Filters;

@@ -35,4 +35,20 @@ describe('Filters', () => {
     const other = options.find(o => o.label !== label);
     expect(screen.getByText(other.label)).toHaveClass('border-gray-300');
   });
+
+  test('uses default className and warns on invalid handler', () => {
+    const { container } = render(
+      <Filters filtras={FiltravimoRezimai.VISI} setFiltras={() => {}} FiltravimoRezimai={FiltravimoRezimai} />
+    );
+    const classes = container.firstChild.classList;
+    expect(classes.contains('relative')).toBe(true);
+    expect(classes.length).toBe(1);
+
+    const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    render(
+      <Filters filtras={FiltravimoRezimai.VISI} setFiltras={42} FiltravimoRezimai={FiltravimoRezimai} />
+    );
+    expect(spy).toHaveBeenCalled();
+    spy.mockRestore();
+  });
 });

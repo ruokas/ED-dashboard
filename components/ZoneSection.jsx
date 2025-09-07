@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Droppable } from 'react-beautiful-dnd';
 import { Button } from '@/components/ui/button';
 import { Check, ChevronDown, ChevronRight } from 'lucide-react';
@@ -76,5 +77,23 @@ const ZoneSection = React.forwardRef(function ZoneSection({
     </div>
   );
 });
+
+ZoneSection.propTypes = {
+  zona: PropTypes.string.isRequired,
+  lovos: PropTypes.arrayOf(PropTypes.string).isRequired,
+  statusMap: PropTypes.object.isRequired,
+  applyFilter: PropTypes.func.isRequired,
+  onWC: PropTypes.func.isRequired,
+  onClean: PropTypes.func.isRequired,
+  onCheck: PropTypes.func.isRequired,
+  onReset: PropTypes.func.isRequired,
+  padejejas: PropTypes.string,
+  onPadejejasChange: PropTypes.func.isRequired,
+  checkAll: PropTypes.func.isRequired,
+};
+
+ZoneSection.defaultProps = {
+  padejejas: '',
+};
 
 export default ZoneSection;

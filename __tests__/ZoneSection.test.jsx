@@ -108,3 +108,20 @@ describe('ZoneSection card layout', () => {
     });
   });
 });
+
+describe('ZoneSection props validation', () => {
+  afterEach(() => cleanup());
+
+  test('defaults padejejas to empty string', () => {
+    renderZone({ padejejas: undefined });
+    const input = screen.getByPlaceholderText('Padėjėjas');
+    expect(input.value).toBe('');
+  });
+
+  test('warns when zona is not a string', () => {
+    const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    renderZone({ zona: 123 });
+    expect(spy).toHaveBeenCalled();
+    spy.mockRestore();
+  });
+});
