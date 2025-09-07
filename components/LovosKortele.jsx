@@ -50,7 +50,7 @@ const LovosKortele = React.memo(function LovosKortele({ lova, index, status, onW
       </CardContent>
       <CardFooter className="p-1 flex gap-1 justify-center">
         <Button
-          size={isTouch ? 'touch' : 'icon-sm'}
+          size="icon-sm"
           variant={s.needsWC ? 'warning' : 'outline'}
           aria-label="Mark toilet needed"
           onClick={e => {
@@ -58,10 +58,10 @@ const LovosKortele = React.memo(function LovosKortele({ lova, index, status, onW
             onWC(lova);
           }}
         >
-          <Toilet size={isTouch ? 24 : 20} />
+          <Toilet size={20}/>
         </Button>
         <Button
-          size={isTouch ? 'touch' : 'icon-sm'}
+          size="icon-sm"
           variant={s.needsCleaning ? 'warning' : 'outline'}
           aria-label="Mark cleaned"
           onClick={e => {
@@ -69,10 +69,10 @@ const LovosKortele = React.memo(function LovosKortele({ lova, index, status, onW
             onClean(lova);
           }}
         >
-          <SprayCan size={isTouch ? 24 : 20} />
+          <SprayCan size={20}/>
         </Button>
         <Button
-          size={isTouch ? 'touch' : 'icon-sm'}
+          size="icon-sm"
           variant={pradelsta ? 'warning' : 'success'}
           aria-label="Mark checked"
           onClick={e => {
@@ -80,10 +80,10 @@ const LovosKortele = React.memo(function LovosKortele({ lova, index, status, onW
             onCheck(lova);
           }}
         >
-          <Check size={isTouch ? 24 : 20} />
+          <Check size={20}/>
         </Button>
         <Button
-          size={isTouch ? 'touch' : 'icon-sm'}
+          size="icon-sm"
           variant="outline"
           aria-label="Reset status"
           onClick={e => {
@@ -91,7 +91,7 @@ const LovosKortele = React.memo(function LovosKortele({ lova, index, status, onW
             onReset(lova);
           }}
         >
-          <RotateCcw size={isTouch ? 24 : 20} />
+          <RotateCcw size={20}/>
         </Button>
       </CardFooter>
     </Card>
