@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, cleanup, fireEvent, within } from '@testing-library/react';
 import { DragDropContext } from 'react-beautiful-dnd';
-import ZoneSection from '../components/ZoneSection.jsx';
+import ZoneSection from '@/components/ZoneSection.jsx';
 
 jest.mock(
   'react-swipeable',
