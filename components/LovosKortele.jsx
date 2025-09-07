@@ -23,15 +23,15 @@ const LovosKortele = React.memo(function LovosKortele({ lova, index, status, onW
   const rysys = lova.startsWith('IT')
     ? 'border-2 border-blue-400 bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100'
     : pradelsta
-      ? 'animate-pulse border-2 border-red-500 bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-100 dark:border-red-400'
+      ? 'border-2 border-red-500 bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-100 dark:border-red-400'
       : s.needsWC || s.needsCleaning
-        ? 'border-2 border-green-400 bg-green-100 text-green-800 animate-pulse dark:bg-green-900 dark:text-green-100 dark:border-green-400'
+        ? 'border-2 border-green-400 bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100 dark:border-green-400'
         : 'bg-gray-200 dark:bg-gray-700 dark:text-gray-100';
 
   const card = (
     <Card
       {...gesture}
-      className={`flex flex-col p-1 w-full min-h-20 sm:min-h-24 h-auto hover:scale-105 transition-transform ${rysys}`}
+      className={`flex flex-col p-1 w-full min-h-20 sm:min-h-24 h-auto motion-safe:hover:scale-105 motion-safe:transition-transform ${rysys}`}
       title={s.lastBy ? `${s.lastBy} • ${new Date(s.lastAt).toLocaleTimeString()}` : ''}
     >
       <CardHeader className="p-1 flex justify-center">
