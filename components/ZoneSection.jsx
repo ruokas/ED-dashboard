@@ -52,7 +52,7 @@ const ZoneSection = React.forwardRef(function ZoneSection({
       </div>
       {expanded && (
         isTouch ? (
-          <div className="grid grid-cols-[repeat(auto-fit,minmax(7rem,1fr))] sm:grid-cols-[repeat(auto-fit,minmax(8rem,1fr))] md:grid-cols-[repeat(auto-fit,minmax(9rem,1fr))] lg:grid-cols-[repeat(auto-fit,minmax(10rem,1fr))] gap-1">
+          <div className="grid grid-cols-[repeat(auto-fit,minmax(8rem,10rem))] sm:grid-cols-[repeat(auto-fit,minmax(8rem,10rem))] md:grid-cols-[repeat(auto-fit,minmax(8rem,10rem))] lg:grid-cols-[repeat(auto-fit,minmax(8rem,10rem))] gap-1">
             {lovos.filter(applyFilter).map((l, i) => (
               <LovosKortele
                 key={l}
@@ -73,7 +73,7 @@ const ZoneSection = React.forwardRef(function ZoneSection({
               <div
                 ref={provided.innerRef}
                 {...provided.droppableProps}
-                className="grid grid-cols-[repeat(auto-fit,minmax(7rem,1fr))] sm:grid-cols-[repeat(auto-fit,minmax(8rem,1fr))] md:grid-cols-[repeat(auto-fit,minmax(9rem,1fr))] lg:grid-cols-[repeat(auto-fit,minmax(10rem,1fr))] gap-1"
+                className="grid grid-cols-[repeat(auto-fit,minmax(8rem,10rem))] sm:grid-cols-[repeat(auto-fit,minmax(8rem,10rem))] md:grid-cols-[repeat(auto-fit,minmax(8rem,10rem))] lg:grid-cols-[repeat(auto-fit,minmax(8rem,10rem))] gap-1"
               >
                 {lovos.filter(applyFilter).map((l, i) => (
                   <LovosKortele
