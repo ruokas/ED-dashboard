@@ -35,7 +35,7 @@ const LovosKortele = React.memo(function LovosKortele({ lova, index, status, onW
       title={s.lastBy ? `${s.lastBy} • ${new Date(s.lastAt).toLocaleTimeString()}` : ''}
     >
       <CardHeader className="p-1 flex justify-center">
-        <span className="text-sm leading-tight">{lova}</span>
+        <span className="text-sm leading-tight truncate">{lova}</span>
       </CardHeader>
       <CardContent className="p-1 flex flex-col items-center flex-1 space-y-0.5">
         {s.lastCheckedAt && (
